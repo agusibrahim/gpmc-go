@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPMC - Google Photos Mobile Client</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @theme {
+            --color-background: #ffffff;
+            --color-foreground: #09090b;
+            --color-muted: #f4f4f5;
+            --color-muted-foreground: #71717a;
+            --color-border: #e4e4e7;
+            --color-accent: #6366f1;
+            --color-accent-foreground: #ffffff;
+            --color-card: rgba(255, 255, 255, 0.8);
+        }
+        .dark {
+            --color-background: #09090b;
+            --color-foreground: #fafafa;
+            --color-muted: #18181b;
+            --color-muted-foreground: #a1a1aa;
+            --color-border: #27272a;
+            --color-accent: #818cf8;
+            --color-card: rgba(24, 24, 27, 0.6);
+        }
+        body {
+            background-color: var(--color-background);
+            color: var(--color-foreground);
+            background-image: radial-gradient(circle at 50% 50%, var(--color-muted) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .glass {
+            background-color: var(--color-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--color-border);
+        }
+        .progress-smooth {
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased transition-colors duration-500">
+    <div class="max-w-5xl mx-auto px-6 py-12">
+        <!-- Dashboard Header -->
+        <header class="flex items-end justify-between mb-12">
+            <div>
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/20">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h1 class="text-3xl font-black tracking-tighter">GPMC <span class="text-accent font-light">PRO</span></h1>
+                </div>
+                <p class="text-muted-foreground font-medium">Enterprise Media Lifecycle Management</p>
+            </div>
+            
+            <button id="theme-toggle" class="glass p-3 rounded-2xl hover:bg-muted transition-all active:scale-90">
+                <svg id="sun-icon" class="w-5 h-5 hidden dark:block text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+                <svg id="moon-icon" class="w-5 h-5 block dark:hidden text-indigo-600" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            </button>
+        </header>
+
+        <!-- Global Progress Overlay -->
+        <div id="global-progress-container" class="hidden animate-in fade-in slide-in-from-top-4 duration-500 mb-8">
+            <div class="glass p-8 rounded-[2rem] bg-accent/5 border-accent/20 shadow-2xl shadow-accent/10">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold tracking-tight mb-1">Processing Batch</h2>
+                        <p class="text-muted-foreground font-medium text-sm"><span id="batch-completed">0</span> of <span id="batch-total">0</span> files completed</p>
+                    </div>
+                    <div class="text-right">
+                        <span id="batch-percent" class="text-5xl font-black text-accent tracking-tighter">0%</span>
+                    </div>
+                </div>
+                <div class="h-4 w-full bg-muted rounded-full overflow-hidden border border-border/50">
+                    <div id="batch-progress-bar" class="progress-smooth h-full bg-accent shadow-[0_0_20px_rgba(99,102,241,0.5)]" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Sidebar Settings -->
+            <aside class="lg:col-span-4 space-y-6">
+                <div class="glass p-8 rounded-[2rem] shadow-sm">
+                    <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground mb-8">System Configuration</h3>
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold flex items-center gap-2">
+                                <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                Concurrent Threads
+                            </label>
+                            <input type="number" id="threads" value="8" class="w-full h-12 glass rounded-xl px-4 text-lg font-bold focus:ring-2 focus:ring-accent outline-none border-none">
+                            <p class="text-[10px] text-muted-foreground">Higher values increase API throughput but may trigger rate limits.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold">Target Album</label>
+                            <input type="text" id="album" placeholder="None (Library Only)" class="w-full h-12 glass rounded-xl px-4 font-medium focus:ring-2 focus:ring-accent outline-none border-none">
+                        </div>
+                        <div class="flex items-center justify-between p-4 glass rounded-2xl">
+                            <div class="space-y-0.5">
+                                <span class="text-sm font-bold">Storage Saver</span>
+                                <p class="text-[10px] text-muted-foreground uppercase tracking-widest">Optimized Quality</p>
+                            </div>
+                            <button id="saver-toggle" class="h-6 w-11 rounded-full bg-muted transition-all relative border border-border">
+                                <span id="saver-dot" class="absolute left-1 top-1 h-4 w-4 rounded-full bg-muted-foreground transition-all"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Upload Area -->
+            <main class="lg:col-span-8 space-y-8">
+                <div id="drop-zone" class="glass border-2 border-dashed border-muted-foreground/20 rounded-[2.5rem] p-16 text-center hover:border-accent hover:bg-accent/[0.02] transition-all cursor-pointer group active:scale-[0.98]">
+                    <div class="w-20 h-20 rounded-[2rem] bg-muted flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-all duration-500 shadow-inner">
+                        <svg class="w-10 h-10 text-muted-foreground group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold tracking-tight mb-2">Initiate Upload</h2>
+                    <p class="text-muted-foreground font-medium mb-10">Select files or drag entire photo albums here</p>
+                    
+                    <div class="flex flex-wrap gap-4 justify-center">
+                        <button id="select-files" class="h-14 px-10 bg-accent text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:opacity-90 active:scale-95 transition-all shadow-xl shadow-accent/20">Select Assets</button>
+                        <button id="select-folder" class="h-14 px-10 glass rounded-2xl font-bold text-sm uppercase tracking-widest hover:bg-muted active:scale-95 transition-all">Direct Directory</button>
+                    </div>
+                    <input type="file" id="file-input" multiple class="hidden">
+                    <input type="file" id="folder-input" webkitdirectory directory multiple class="hidden">
+                </div>
+
+                <!-- Queue Container -->
+                <div class="space-y-4">
+                    <h3 id="queue-header" class="hidden text-xs font-black uppercase tracking-[0.3em] text-muted-foreground pl-4">Operation Queue</h3>
+                    <div id="upload-list" class="space-y-3 max-h-[600px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-muted"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const saverToggle = document.getElementById('saver-toggle');
+        const saverDot = document.getElementById('saver-dot');
+        const dropZone = document.getElementById('drop-zone');
+        const uploadList = document.getElementById('upload-list');
+        const fileInput = document.getElementById('file-input');
+        const folderInput = document.getElementById('folder-input');
+        
+        // Batch tracking
+        let batchTotal = 0;
+        let batchCompleted = 0;
+        let isSaver = false;
+        const activeUploads = new Map();
+
+        themeToggle.onclick = () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        };
+
+        saverToggle.onclick = () => {
+            isSaver = !isSaver;
+            saverToggle.classList.toggle('bg-accent', isSaver);
+            saverDot.classList.toggle('translate-x-5', isSaver);
+            saverDot.classList.toggle('bg-white', isSaver);
+        };
+
+        const connectSSE = () => {
+            const ev = new EventSource('/api/events');
+            ev.onmessage = (e) => handleUpdate(JSON.parse(e.data));
+            ev.onerror = () => { ev.close(); setTimeout(connectSSE, 3000); };
+        };
+        connectSSE();
+
+        document.getElementById('select-files').onclick = () => fileInput.click();
+        document.getElementById('select-folder').onclick = () => folderInput.click();
+        fileInput.onchange = e => uploadFiles(e.target.files);
+        folderInput.onchange = e => uploadFiles(e.target.files);
+        
+        dropZone.ondragover = e => { e.preventDefault(); dropZone.classList.add('border-accent'); dropZone.classList.add('bg-accent/[0.05]'); };
+        dropZone.ondragleave = () => { dropZone.classList.remove('border-accent'); dropZone.classList.remove('bg-accent/[0.05]'); };
+        dropZone.ondrop = e => { e.preventDefault(); dropZone.classList.remove('border-accent'); uploadFiles(e.dataTransfer.files); };
+
+        async function uploadFiles(files) {
+            if (files.length === 0) return;
+            const formData = new FormData();
+            formData.append('threads', document.getElementById('threads').value);
+            formData.append('album', document.getElementById('album').value);
+            formData.append('saver', isSaver);
+            for (let f of files) formData.append('files', f, f.webkitRelativePath || f.name);
+            fetch('/api/upload', { method: 'POST', body: formData });
+        }
+
+        function handleUpdate(update) {
+            if (update.status === 'BatchMeta') {
+                initBatch(update.total_files);
+                return;
+            }
+
+            let card = activeUploads.get(update.id);
+            if (!card) card = createFileCard(update);
+            
+            const pBar = card.querySelector('.p-bar');
+            const statusText = card.querySelector('.status-text');
+            pBar.style.width = `${update.progress * 100}%`;
+            statusText.textContent = update.status;
+            
+            if (update.status === 'Done') {
+                batchCompleted++;
+                updateGlobalProgress();
+                card.classList.add('opacity-60');
+                statusText.classList.add('text-emerald-500');
+                pBar.classList.add('bg-emerald-500');
+            } else if (update.status === 'Error') {
+                card.classList.add('border-red-500/50');
+                statusText.classList.add('text-red-500');
+                statusText.textContent = update.error;
+            }
+        }
+
+        function initBatch(total) {
+            batchTotal = total;
+            batchCompleted = 0;
+            document.getElementById('global-progress-container').classList.remove('hidden');
+            document.getElementById('queue-header').classList.remove('hidden');
+            document.getElementById('batch-total').textContent = total;
+            updateGlobalProgress();
+        }
+
+        function updateGlobalProgress() {
+            const percent = batchTotal > 0 ? Math.round((batchCompleted / batchTotal) * 100) : 0;
+            document.getElementById('batch-completed').textContent = batchCompleted;
+            document.getElementById('batch-percent').textContent = `${percent}%`;
+            document.getElementById('batch-progress-bar').style.width = `${percent}%`;
+            
+            if (percent === 100) {
+                setTimeout(() => {
+                    document.getElementById('batch-percent').classList.add('text-emerald-500');
+                }, 500);
+            }
+        }
+
+        function createFileCard(update) {
+            const div = document.createElement('div');
+            div.className = 'glass p-5 rounded-2xl flex items-center gap-5 animate-in fade-in slide-in-from-bottom-2 duration-300 transition-all';
+            div.innerHTML = `
+                <div class="w-12 h-12 glass rounded-xl flex items-center justify-center shrink-0 shadow-inner">
+                    <svg class="w-6 h-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-bold truncate max-w-[80%]">${update.filename}</span>
+                        <span class="status-text text-[10px] font-black uppercase tracking-widest text-muted-foreground"></span>
+                    </div>
+                    <div class="h-1 w-full bg-muted rounded-full overflow-hidden">
+                        <div class="p-bar h-full bg-accent transition-all duration-300 w-0"></div>
+                    </div>
+                </div>
+            `;
+            uploadList.prepend(div);
+            activeUploads.set(update.id, div);
+            return div;
+        }
+    </script>
+</body>
+</html>

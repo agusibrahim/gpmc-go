@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/xob0t/gpmc-go/internal/client"
 	"github.com/xob0t/gpmc-go/internal/config"
+	"github.com/xob0t/gpmc-go/internal/web"
 )
 
 var (
@@ -31,6 +32,7 @@ var (
 	flagMatchPath    bool
 	flagConfig       string
 	flagInitConfig   bool
+	flagPort         int
 )
 
 var rootCmd = &cobra.Command{
@@ -60,6 +62,13 @@ var initConfigCmd = &cobra.Command{
 	Short: "Create a template config file",
 	Long:  "Create a template configuration file at ~/.gpmc/config.yaml",
 	RunE:  runInitConfig,
+}
+
+var serveCmd = &cobra.Command{
+	Use:   "serve",
+	Short: "Start the Web UI server",
+	Long:  "Launch an interactive web dashboard with Tailwind CSS for uploading files and folders",
+	RunE:  runServe,
 }
 
 func main() {
@@ -97,6 +106,9 @@ func init() {
 	// Add subcommands
 	rootCmd.AddCommand(updateCacheCmd)
 	rootCmd.AddCommand(initConfigCmd)
+	rootCmd.AddCommand(serveCmd)
+
+	serveCmd.Flags().IntVarP(&flagPort, "port", "p", 8080, "Port to run the web server on")
 }
 
 func runUpload(cmd *cobra.Command, args []string) error {
@@ -178,6 +190,27 @@ func runUpdateCache(cmd *cobra.Command, args []string) error {
 	}
 
 	return nil
+}
+
+func runServe(cmd *cobra.Command, args []string) error {
+	// Load config
+	cfg, err := loadConfig()
+	if err != nil {
+		return fmt.Errorf("failed to load config: %w", err)
+	}
+
+	// Create client
+	c, err := client.New(cfg.AuthData,
+		client.WithTimeout(flagTimeout),
+		client.WithLanguage(cfg.Language),
+	)
+	if err != nil {
+		return fmt.Errorf("failed to create client: %w", err)
+	}
+
+	// Create and start server
+	srv := web.NewServer(c, flagPort)
+	return srv.Start()
 }
 
 func runInitConfig(cmd *cobra.Command, args []string) error {
