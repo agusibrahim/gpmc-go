@@ -3,6 +3,7 @@ package proto
 import (
 	"fmt"
 	"math"
+	"sort"
 	"strconv"
 
 	"google.golang.org/protobuf/encoding/protowire"
@@ -85,6 +86,26 @@ func EncodeMessage(body map[string]interface{}, msgDef *MessageDef) []byte {
 					buf = encodeMessageField(buf, fieldNum, elemVal, fieldDef, hasDef)
 				}
 			}
+		case []string:
+			// Repeated string field - encode each element separately
+			for _, s := range v {
+				buf = encodeStringField(buf, fieldNum, s, fieldDef, hasDef)
+			}
+		case [][]byte:
+			// Repeated bytes field
+			for _, b := range v {
+				buf = encodeBytesField(buf, fieldNum, b, fieldDef, hasDef)
+			}
+		case []map[string]interface{}:
+			// Repeated message field - encode each element separately
+			for _, m := range v {
+				buf = encodeMessageField(buf, fieldNum, m, fieldDef, hasDef)
+			}
+		case []int64:
+			// Repeated int field
+			for _, i := range v {
+				buf = encodeField(buf, fieldNum, i, fieldDef, hasDef)
+			}
 		case bool:
 			// Encode bool as varint (0 or 1)
 			var val int64
@@ -154,6 +175,13 @@ func getFieldOrder(body map[string]interface{}, msgDef *MessageDef) []string {
 	for key := range body {
 		fieldNums = append(fieldNums, key)
 	}
+
+	// Sort numerically for consistent deterministic order
+	sort.Slice(fieldNums, func(i, j int) bool {
+		numI, _ := strconv.Atoi(fieldNums[i])
+		numJ, _ := strconv.Atoi(fieldNums[j])
+		return numI < numJ
+	})
 
 	// If there's a field_order specification, use it
 	// This is a simplified implementation - the full version would

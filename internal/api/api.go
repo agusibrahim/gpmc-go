@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
@@ -231,11 +232,13 @@ func parseAuthResponse(resp *http.Response) (token string, expiry int64, err err
 		}
 		parts := splitN(line, "=", 2)
 		if len(parts) == 2 {
-			switch parts[0] {
+			key := strings.TrimSpace(parts[0])
+			val := strings.TrimSpace(parts[1])
+			switch key {
 			case "Auth":
-				token = parts[1]
+				token = val
 			case "Expiry":
-				if exp, err := strconv.ParseInt(parts[1], 10, 64); err == nil {
+				if exp, err := strconv.ParseInt(val, 10, 64); err == nil {
 					expiry = exp
 				}
 			}
@@ -275,8 +278,7 @@ func splitLines(s string) []string {
 }
 
 func splitN(s, sep string, n int) []string {
-	// Simple split function
-	return []string{s} // Placeholder
+	return strings.SplitN(s, sep, n)
 }
 
 // retryTransport implements retry logic for HTTP requests

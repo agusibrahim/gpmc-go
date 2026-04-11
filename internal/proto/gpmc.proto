@@ -1,0 +1,3987 @@
+syntax = "proto2";
+package gpmc;
+option go_package = "github.com/xob0t/gpmc-go/internal/proto/pb";
+
+message CommitUploadMessage {
+  message Field1 {
+    message Field1 {
+      optional int64 f_1 = 1;
+      optional bytes f_2 = 2;
+    }
+    optional Field1 f_1 = 1;
+    optional string f_2 = 2;
+    optional bytes f_3 = 3;
+    message Field4 {
+      optional int64 f_1 = 1;
+      optional int64 f_2 = 2;
+    }
+    optional Field4 f_4 = 4;
+    optional int64 f_7 = 7;
+    message Field8 {
+      message Field1 {
+        optional string f_1 = 1;
+        optional string f_3 = 3;
+        optional string f_4 = 4;
+        message Field5 {
+          optional string f_1 = 1;
+          optional string f_2 = 2;
+          optional string f_3 = 3;
+          optional string f_4 = 4;
+          optional string f_5 = 5;
+          optional string f_7 = 7;
+        }
+        optional Field5 f_5 = 5;
+        optional string f_6 = 6;
+        message Field7 {
+          optional string f_2 = 2;
+        }
+        optional Field7 f_7 = 7;
+        optional string f_15 = 15;
+        optional string f_16 = 16;
+        optional string f_17 = 17;
+        optional string f_19 = 19;
+        optional string f_20 = 20;
+        message Field21 {
+          message Field5 {
+            optional string f_3 = 3;
+          }
+          optional Field5 f_5 = 5;
+          optional string f_6 = 6;
+        }
+        optional Field21 f_21 = 21;
+        optional string f_25 = 25;
+        message Field30 {
+          optional string f_2 = 2;
+        }
+        optional Field30 f_30 = 30;
+        optional string f_31 = 31;
+        optional string f_32 = 32;
+        message Field33 {
+          optional string f_1 = 1;
+        }
+        optional Field33 f_33 = 33;
+        optional string f_34 = 34;
+        optional string f_36 = 36;
+        optional string f_37 = 37;
+        optional string f_38 = 38;
+        optional string f_39 = 39;
+        optional string f_40 = 40;
+        optional string f_41 = 41;
+      }
+      optional Field1 f_1 = 1;
+      message Field5 {
+        message Field2 {
+          message Field2 {
+            message Field3 {
+              optional string f_2 = 2;
+            }
+            optional Field3 f_3 = 3;
+            message Field4 {
+              optional string f_2 = 2;
+            }
+            optional Field4 f_4 = 4;
+          }
+          optional Field2 f_2 = 2;
+          message Field4 {
+            message Field2 {
+              optional int64 f_2 = 2;
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+            optional string f_2 = 2;
+          }
+          optional Field5 f_5 = 5;
+          optional int64 f_6 = 6;
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+          message Field2 {
+            optional string f_3 = 3;
+            optional string f_4 = 4;
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+            optional string f_2 = 2;
+            message Field3 {
+              optional int64 f_2 = 2;
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field3 f_3 = 3;
+          optional string f_4 = 4;
+          message Field5 {
+            message Field2 {
+              optional int64 f_2 = 2;
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field5 f_5 = 5;
+          optional string f_7 = 7;
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field2 {
+            optional string f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+          message Field1 {
+            message Field2 {
+              optional string f_3 = 3;
+              optional string f_4 = 4;
+            }
+            optional Field2 f_2 = 2;
+            message Field3 {
+              optional string f_2 = 2;
+              message Field3 {
+                optional int64 f_2 = 2;
+              }
+              optional Field3 f_3 = 3;
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field1 f_1 = 1;
+          optional int64 f_3 = 3;
+        }
+        optional Field5 f_5 = 5;
+      }
+      optional Field5 f_5 = 5;
+      optional string f_8 = 8;
+      message Field9 {
+        optional string f_2 = 2;
+        message Field3 {
+          optional string f_1 = 1;
+          optional string f_2 = 2;
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field1 {
+            message Field3 {
+              message Field1 {
+                message Field1 {
+                  message Field5 {
+                    optional string f_1 = 1;
+                  }
+                  optional Field5 f_5 = 5;
+                  optional string f_6 = 6;
+                }
+                optional Field1 f_1 = 1;
+                optional string f_2 = 2;
+                message Field3 {
+                  message Field1 {
+                    message Field5 {
+                      optional string f_1 = 1;
+                    }
+                    optional Field5 f_5 = 5;
+                    optional string f_6 = 6;
+                  }
+                  optional Field1 f_1 = 1;
+                  optional string f_2 = 2;
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field1 f_1 = 1;
+            }
+            optional Field3 f_3 = 3;
+            message Field4 {
+              message Field1 {
+                optional string f_2 = 2;
+              }
+              optional Field1 f_1 = 1;
+            }
+            optional Field4 f_4 = 4;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field9 f_9 = 9;
+      message Field11 {
+        optional string f_2 = 2;
+        optional string f_3 = 3;
+        message Field4 {
+          message Field2 {
+            optional int64 f_1 = 1;
+            optional int64 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field11 f_11 = 11;
+      optional string f_12 = 12;
+      message Field14 {
+        optional string f_2 = 2;
+        optional string f_3 = 3;
+        message Field4 {
+          message Field2 {
+            optional int64 f_1 = 1;
+            optional int64 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field14 f_14 = 14;
+      message Field15 {
+        optional string f_1 = 1;
+        optional string f_4 = 4;
+      }
+      optional Field15 f_15 = 15;
+      message Field17 {
+        optional string f_1 = 1;
+        optional string f_4 = 4;
+      }
+      optional Field17 f_17 = 17;
+      message Field19 {
+        optional string f_2 = 2;
+        optional string f_3 = 3;
+        message Field4 {
+          message Field2 {
+            optional int64 f_1 = 1;
+            optional int64 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field19 f_19 = 19;
+      optional string f_22 = 22;
+      optional string f_23 = 23;
+    }
+    optional Field8 f_8 = 8;
+    optional int64 f_10 = 10;
+    optional int64 f_17 = 17;
+  }
+  optional Field1 f_1 = 1;
+  message Field2 {
+    optional string f_3 = 3;
+    optional string f_4 = 4;
+    optional int64 f_5 = 5;
+  }
+  optional Field2 f_2 = 2;
+  optional bytes f_3 = 3;
+}
+
+message CreateAlbumMessage {
+  optional string f_1 = 1;
+  optional int64 f_2 = 2;
+  optional int64 f_3 = 3;
+  message Field4 {
+    message Field1 {
+      optional string f_1 = 1;
+    }
+    optional Field1 f_1 = 1;
+  }
+  repeated Field4 f_4 = 4;
+  message Field6 {
+  }
+  optional Field6 f_6 = 6;
+  message Field7 {
+    optional int64 f_1 = 1;
+  }
+  optional Field7 f_7 = 7;
+  message Field8 {
+    optional string f_3 = 3;
+    optional string f_4 = 4;
+    optional int64 f_5 = 5;
+  }
+  optional Field8 f_8 = 8;
+}
+
+message MoveToTrashMessage {
+  optional int64 f_2 = 2;
+  optional string f_3 = 3;
+  optional int64 f_4 = 4;
+  message Field8 {
+    message Field4 {
+      message Field2 {
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field3 f_3 = 3;
+      message Field4 {
+      }
+      optional Field4 f_4 = 4;
+      message Field5 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field5 f_5 = 5;
+    }
+    optional Field4 f_4 = 4;
+  }
+  optional Field8 f_8 = 8;
+  message Field9 {
+    optional int64 f_1 = 1;
+    message Field2 {
+      optional int64 f_1 = 1;
+      optional string f_2 = 2;
+    }
+    optional Field2 f_2 = 2;
+  }
+  optional Field9 f_9 = 9;
+}
+
+message DeletePermanentlyMessage {
+  optional int64 f_2 = 2;
+  optional string f_3 = 3;
+  optional int64 f_4 = 4;
+  message Field8 {
+    message Field4 {
+      message Field2 {
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field3 f_3 = 3;
+      message Field4 {
+      }
+      optional Field4 f_4 = 4;
+      message Field5 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field5 f_5 = 5;
+    }
+    optional Field4 f_4 = 4;
+  }
+  optional Field8 f_8 = 8;
+  optional string f_9 = 9;
+}
+
+message FindRemoteMediaByHashMessage {
+  message Field1 {
+    message Field1 {
+      optional bytes f_1 = 1;
+    }
+    optional Field1 f_1 = 1;
+    message Field2 {
+    }
+    optional Field2 f_2 = 2;
+  }
+  optional Field1 f_1 = 1;
+}
+
+message GetUploadTokenMessage {
+  optional int64 f_1 = 1;
+  optional int64 f_2 = 2;
+  optional int64 f_3 = 3;
+  optional int64 f_4 = 4;
+  optional int64 f_7 = 7;
+}
+
+message AddMediaToAlbumMessage {
+  optional string f_1 = 1;
+  optional string f_2 = 2;
+  message Field5 {
+    optional int64 f_1 = 1;
+  }
+  optional Field5 f_5 = 5;
+  message Field6 {
+    optional string f_3 = 3;
+    optional string f_4 = 4;
+    optional int64 f_5 = 5;
+  }
+  optional Field6 f_6 = 6;
+  optional int64 f_7 = 7;
+}
+
+message GetLibPageInitMessage {
+  message Field1 {
+    message Field1 {
+      message Field1 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+          }
+          optional Field5 f_5 = 5;
+          message Field7 {
+          }
+          optional Field7 f_7 = 7;
+        }
+        optional Field5 f_5 = 5;
+        message Field6 {
+        }
+        optional Field6 f_6 = 6;
+        message Field7 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field7 f_7 = 7;
+        message Field15 {
+        }
+        optional Field15 f_15 = 15;
+        message Field16 {
+        }
+        optional Field16 f_16 = 16;
+        message Field17 {
+        }
+        optional Field17 f_17 = 17;
+        message Field19 {
+        }
+        optional Field19 f_19 = 19;
+        message Field20 {
+        }
+        optional Field20 f_20 = 20;
+        message Field21 {
+          message Field5 {
+            message Field3 {
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field5 f_5 = 5;
+          message Field6 {
+          }
+          optional Field6 f_6 = 6;
+        }
+        optional Field21 f_21 = 21;
+        message Field25 {
+        }
+        optional Field25 f_25 = 25;
+        message Field30 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field30 f_30 = 30;
+        message Field31 {
+        }
+        optional Field31 f_31 = 31;
+        message Field32 {
+        }
+        optional Field32 f_32 = 32;
+        message Field33 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field33 f_33 = 33;
+        message Field34 {
+        }
+        optional Field34 f_34 = 34;
+        message Field36 {
+        }
+        optional Field36 f_36 = 36;
+        message Field37 {
+        }
+        optional Field37 f_37 = 37;
+        message Field38 {
+        }
+        optional Field38 f_38 = 38;
+        message Field39 {
+        }
+        optional Field39 f_39 = 39;
+        message Field40 {
+        }
+        optional Field40 f_40 = 40;
+        message Field41 {
+        }
+        optional Field41 f_41 = 41;
+      }
+      optional Field1 f_1 = 1;
+      message Field5 {
+        message Field2 {
+          message Field2 {
+            message Field3 {
+              message Field2 {
+              }
+              optional Field2 f_2 = 2;
+            }
+            optional Field3 f_3 = 3;
+            message Field4 {
+              message Field2 {
+              }
+              optional Field2 f_2 = 2;
+            }
+            optional Field4 f_4 = 4;
+          }
+          optional Field2 f_2 = 2;
+          message Field4 {
+            message Field2 {
+              optional int64 f_2 = 2;
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+            message Field2 {
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field5 f_5 = 5;
+          optional int64 f_6 = 6;
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+          message Field2 {
+            message Field3 {
+            }
+            optional Field3 f_3 = 3;
+            message Field4 {
+            }
+            optional Field4 f_4 = 4;
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+            message Field2 {
+            }
+            optional Field2 f_2 = 2;
+            message Field3 {
+              optional int64 f_2 = 2;
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+            message Field2 {
+              optional int64 f_2 = 2;
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field5 f_5 = 5;
+          message Field7 {
+          }
+          optional Field7 f_7 = 7;
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field2 {
+            message Field2 {
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+          message Field1 {
+            message Field2 {
+              message Field3 {
+              }
+              optional Field3 f_3 = 3;
+              message Field4 {
+              }
+              optional Field4 f_4 = 4;
+            }
+            optional Field2 f_2 = 2;
+            message Field3 {
+              message Field2 {
+              }
+              optional Field2 f_2 = 2;
+              message Field3 {
+                optional int64 f_2 = 2;
+              }
+              optional Field3 f_3 = 3;
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field1 f_1 = 1;
+          optional int64 f_3 = 3;
+        }
+        optional Field5 f_5 = 5;
+      }
+      optional Field5 f_5 = 5;
+      message Field8 {
+      }
+      optional Field8 f_8 = 8;
+      message Field9 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field1 {
+            message Field3 {
+              message Field1 {
+                message Field1 {
+                  message Field5 {
+                    message Field1 {
+                    }
+                    optional Field1 f_1 = 1;
+                  }
+                  optional Field5 f_5 = 5;
+                  message Field6 {
+                  }
+                  optional Field6 f_6 = 6;
+                }
+                optional Field1 f_1 = 1;
+                message Field2 {
+                }
+                optional Field2 f_2 = 2;
+                message Field3 {
+                  message Field1 {
+                    message Field5 {
+                      message Field1 {
+                      }
+                      optional Field1 f_1 = 1;
+                    }
+                    optional Field5 f_5 = 5;
+                    message Field6 {
+                    }
+                    optional Field6 f_6 = 6;
+                  }
+                  optional Field1 f_1 = 1;
+                  message Field2 {
+                  }
+                  optional Field2 f_2 = 2;
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field1 f_1 = 1;
+            }
+            optional Field3 f_3 = 3;
+            message Field4 {
+              message Field1 {
+                message Field2 {
+                }
+                optional Field2 f_2 = 2;
+              }
+              optional Field1 f_1 = 1;
+            }
+            optional Field4 f_4 = 4;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field9 f_9 = 9;
+      message Field11 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field2 {
+            optional int64 f_1 = 1;
+            optional int64 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field11 f_11 = 11;
+      message Field12 {
+      }
+      optional Field12 f_12 = 12;
+      message Field14 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field2 {
+            optional int64 f_1 = 1;
+            optional int64 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field14 f_14 = 14;
+      message Field15 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field15 f_15 = 15;
+      message Field17 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field17 f_17 = 17;
+      message Field19 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field2 {
+            optional int64 f_1 = 1;
+            optional int64 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field19 f_19 = 19;
+      message Field22 {
+      }
+      optional Field22 f_22 = 22;
+      message Field23 {
+      }
+      optional Field23 f_23 = 23;
+    }
+    optional Field1 f_1 = 1;
+    message Field2 {
+      message Field1 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+        }
+        optional Field5 f_5 = 5;
+        message Field6 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+          }
+          optional Field5 f_5 = 5;
+          message Field7 {
+          }
+          optional Field7 f_7 = 7;
+        }
+        optional Field6 f_6 = 6;
+        message Field7 {
+        }
+        optional Field7 f_7 = 7;
+        message Field8 {
+        }
+        optional Field8 f_8 = 8;
+        message Field10 {
+        }
+        optional Field10 f_10 = 10;
+        message Field12 {
+        }
+        optional Field12 f_12 = 12;
+        message Field13 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+        }
+        optional Field13 f_13 = 13;
+        message Field15 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field15 f_15 = 15;
+        message Field18 {
+        }
+        optional Field18 f_18 = 18;
+      }
+      optional Field1 f_1 = 1;
+      message Field4 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field4 f_4 = 4;
+      message Field9 {
+      }
+      optional Field9 f_9 = 9;
+      message Field11 {
+        message Field1 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+          }
+          optional Field5 f_5 = 5;
+          message Field6 {
+          }
+          optional Field6 f_6 = 6;
+          message Field9 {
+          }
+          optional Field9 f_9 = 9;
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field11 f_11 = 11;
+      message Field14 {
+        message Field1 {
+          message Field1 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+            message Field2 {
+              message Field2 {
+                message Field1 {
+                  message Field1 {
+                  }
+                  optional Field1 f_1 = 1;
+                }
+                optional Field1 f_1 = 1;
+                message Field3 {
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field2 f_2 = 2;
+            }
+            optional Field2 f_2 = 2;
+            message Field3 {
+              message Field4 {
+                message Field1 {
+                  message Field1 {
+                  }
+                  optional Field1 f_1 = 1;
+                }
+                optional Field1 f_1 = 1;
+                message Field3 {
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field4 f_4 = 4;
+              message Field5 {
+                message Field1 {
+                  message Field1 {
+                  }
+                  optional Field1 f_1 = 1;
+                }
+                optional Field1 f_1 = 1;
+                message Field3 {
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field5 f_5 = 5;
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field14 f_14 = 14;
+      message Field17 {
+      }
+      optional Field17 f_17 = 17;
+      message Field18 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field18 f_18 = 18;
+      message Field20 {
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field20 f_20 = 20;
+      message Field23 {
+      }
+      optional Field23 f_23 = 23;
+    }
+    optional Field2 f_2 = 2;
+    message Field3 {
+      message Field2 {
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field7 {
+        }
+        optional Field7 f_7 = 7;
+        message Field8 {
+        }
+        optional Field8 f_8 = 8;
+        message Field14 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field14 f_14 = 14;
+        message Field16 {
+        }
+        optional Field16 f_16 = 16;
+        message Field17 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field17 f_17 = 17;
+        message Field18 {
+        }
+        optional Field18 f_18 = 18;
+        message Field19 {
+        }
+        optional Field19 f_19 = 19;
+        message Field20 {
+        }
+        optional Field20 f_20 = 20;
+        message Field21 {
+        }
+        optional Field21 f_21 = 21;
+        message Field22 {
+        }
+        optional Field22 f_22 = 22;
+        message Field23 {
+        }
+        optional Field23 f_23 = 23;
+        message Field27 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field27 f_27 = 27;
+        message Field29 {
+        }
+        optional Field29 f_29 = 29;
+        message Field30 {
+        }
+        optional Field30 f_30 = 30;
+        message Field31 {
+        }
+        optional Field31 f_31 = 31;
+        message Field32 {
+        }
+        optional Field32 f_32 = 32;
+        message Field34 {
+        }
+        optional Field34 f_34 = 34;
+        message Field37 {
+        }
+        optional Field37 f_37 = 37;
+        message Field38 {
+        }
+        optional Field38 f_38 = 38;
+        message Field39 {
+        }
+        optional Field39 f_39 = 39;
+        message Field41 {
+        }
+        optional Field41 f_41 = 41;
+      }
+      optional Field3 f_3 = 3;
+      message Field4 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field4 f_4 = 4;
+      message Field7 {
+      }
+      optional Field7 f_7 = 7;
+      message Field12 {
+      }
+      optional Field12 f_12 = 12;
+      message Field13 {
+      }
+      optional Field13 f_13 = 13;
+      message Field14 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field4 f_4 = 4;
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+        }
+        optional Field3 f_3 = 3;
+      }
+      optional Field14 f_14 = 14;
+      message Field15 {
+      }
+      optional Field15 f_15 = 15;
+      message Field16 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field16 f_16 = 16;
+      message Field18 {
+      }
+      optional Field18 f_18 = 18;
+      message Field19 {
+        message Field4 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+        message Field6 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+        }
+        optional Field6 f_6 = 6;
+        message Field7 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+        }
+        optional Field7 f_7 = 7;
+        message Field8 {
+        }
+        optional Field8 f_8 = 8;
+      }
+      optional Field19 f_19 = 19;
+      message Field20 {
+      }
+      optional Field20 f_20 = 20;
+      message Field24 {
+      }
+      optional Field24 f_24 = 24;
+      message Field25 {
+      }
+      optional Field25 f_25 = 25;
+    }
+    optional Field3 f_3 = 3;
+    optional string f_4 = 4;
+    optional int64 f_7 = 7;
+    message Field9 {
+      message Field1 {
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field1 f_1 = 1;
+      message Field2 {
+        message Field3 {
+          optional int64 f_2 = 2;
+        }
+        optional Field3 f_3 = 3;
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field3 f_3 = 3;
+      message Field4 {
+      }
+      optional Field4 f_4 = 4;
+      message Field7 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field7 f_7 = 7;
+      message Field8 {
+        optional int64 f_1 = 1;
+        optional string f_2 = 2;
+      }
+      optional Field8 f_8 = 8;
+      message Field9 {
+      }
+      optional Field9 f_9 = 9;
+    }
+    optional Field9 f_9 = 9;
+    repeated int64 f_11 = 11;
+    message Field12 {
+      message Field2 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field3 f_3 = 3;
+      message Field4 {
+      }
+      optional Field4 f_4 = 4;
+    }
+    optional Field12 f_12 = 12;
+    message Field13 {
+    }
+    optional Field13 f_13 = 13;
+    message Field15 {
+      message Field3 {
+        optional int64 f_1 = 1;
+      }
+      optional Field3 f_3 = 3;
+    }
+    optional Field15 f_15 = 15;
+    message Field18 {
+      message Field169945741 {
+        message Field1 {
+          message Field1 {
+            repeated int64 f_4 = 4;
+            optional int64 f_5 = 5;
+            optional int64 f_6 = 6;
+            optional int64 f_7 = 7;
+            optional int64 f_8 = 8;
+            optional int64 f_11 = 11;
+            optional int64 f_12 = 12;
+            optional int64 f_13 = 13;
+            optional int64 f_15 = 15;
+            optional int64 f_16 = 16;
+            optional int64 f_17 = 17;
+            optional int64 f_18 = 18;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field169945741 f_169945741 = 169945741;
+    }
+    optional Field18 f_18 = 18;
+    message Field19 {
+      message Field1 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field1 f_1 = 1;
+      message Field2 {
+        repeated int64 f_1 = 1;
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field3 f_3 = 3;
+      message Field5 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field5 f_5 = 5;
+      message Field6 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field6 f_6 = 6;
+      message Field7 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field7 f_7 = 7;
+      message Field8 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field8 f_8 = 8;
+    }
+    optional Field19 f_19 = 19;
+    message Field20 {
+      optional int64 f_1 = 1;
+      message Field3 {
+        optional string f_1 = 1;
+        message Field2 {
+          message Field1 {
+            repeated int64 f_4 = 4;
+            optional int64 f_5 = 5;
+            optional int64 f_6 = 6;
+            optional int64 f_7 = 7;
+            optional int64 f_8 = 8;
+            optional int64 f_11 = 11;
+            optional int64 f_12 = 12;
+            optional int64 f_13 = 13;
+            optional int64 f_15 = 15;
+            optional int64 f_16 = 16;
+            optional int64 f_17 = 17;
+            optional int64 f_18 = 18;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field3 f_3 = 3;
+    }
+    optional Field20 f_20 = 20;
+    message Field21 {
+      message Field2 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+        }
+        optional Field5 f_5 = 5;
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field2 {
+          optional int64 f_1 = 1;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field3 f_3 = 3;
+      message Field5 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field5 f_5 = 5;
+      message Field6 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field6 f_6 = 6;
+      message Field7 {
+        optional int64 f_1 = 1;
+        optional string f_2 = 2;
+        optional string f_3 = 3;
+      }
+      optional Field7 f_7 = 7;
+      message Field8 {
+        message Field3 {
+          message Field1 {
+            message Field1 {
+              message Field2 {
+                optional int64 f_1 = 1;
+              }
+              optional Field2 f_2 = 2;
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field8 f_8 = 8;
+      message Field9 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field9 f_9 = 9;
+      message Field10 {
+        message Field1 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field1 f_1 = 1;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field5 {
+        }
+        optional Field5 f_5 = 5;
+        message Field6 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field6 f_6 = 6;
+        message Field7 {
+        }
+        optional Field7 f_7 = 7;
+        message Field9 {
+        }
+        optional Field9 f_9 = 9;
+        message Field10 {
+        }
+        optional Field10 f_10 = 10;
+      }
+      optional Field10 f_10 = 10;
+      message Field11 {
+      }
+      optional Field11 f_11 = 11;
+      message Field12 {
+      }
+      optional Field12 f_12 = 12;
+      message Field13 {
+      }
+      optional Field13 f_13 = 13;
+    }
+    optional Field21 f_21 = 21;
+    message Field22 {
+      optional int64 f_1 = 1;
+    }
+    optional Field22 f_22 = 22;
+    message Field25 {
+      message Field1 {
+        message Field1 {
+          message Field1 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field1 f_1 = 1;
+      message Field2 {
+      }
+      optional Field2 f_2 = 2;
+    }
+    optional Field25 f_25 = 25;
+  }
+  optional Field1 f_1 = 1;
+  message Field2 {
+    message Field1 {
+      message Field1 {
+        message Field1 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field1 f_1 = 1;
+    }
+    optional Field1 f_1 = 1;
+    message Field2 {
+    }
+    optional Field2 f_2 = 2;
+  }
+  optional Field2 f_2 = 2;
+}
+
+message GetLibStateMessage {
+  message Field1 {
+    message Field1 {
+      message Field1 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+          }
+          optional Field5 f_5 = 5;
+          message Field7 {
+          }
+          optional Field7 f_7 = 7;
+        }
+        optional Field5 f_5 = 5;
+        message Field6 {
+        }
+        optional Field6 f_6 = 6;
+        message Field7 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field7 f_7 = 7;
+        message Field15 {
+        }
+        optional Field15 f_15 = 15;
+        message Field16 {
+        }
+        optional Field16 f_16 = 16;
+        message Field17 {
+        }
+        optional Field17 f_17 = 17;
+        message Field19 {
+        }
+        optional Field19 f_19 = 19;
+        message Field20 {
+        }
+        optional Field20 f_20 = 20;
+        message Field21 {
+          message Field5 {
+            message Field3 {
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field5 f_5 = 5;
+          message Field6 {
+          }
+          optional Field6 f_6 = 6;
+        }
+        optional Field21 f_21 = 21;
+        message Field25 {
+        }
+        optional Field25 f_25 = 25;
+        message Field30 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field30 f_30 = 30;
+        message Field31 {
+        }
+        optional Field31 f_31 = 31;
+        message Field32 {
+        }
+        optional Field32 f_32 = 32;
+        message Field33 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field33 f_33 = 33;
+        message Field34 {
+        }
+        optional Field34 f_34 = 34;
+        message Field36 {
+        }
+        optional Field36 f_36 = 36;
+        message Field37 {
+        }
+        optional Field37 f_37 = 37;
+        message Field38 {
+        }
+        optional Field38 f_38 = 38;
+        message Field39 {
+        }
+        optional Field39 f_39 = 39;
+        message Field40 {
+        }
+        optional Field40 f_40 = 40;
+        message Field41 {
+        }
+        optional Field41 f_41 = 41;
+      }
+      optional Field1 f_1 = 1;
+      message Field5 {
+        message Field2 {
+          message Field2 {
+            message Field3 {
+              message Field2 {
+              }
+              optional Field2 f_2 = 2;
+            }
+            optional Field3 f_3 = 3;
+            message Field4 {
+              message Field2 {
+              }
+              optional Field2 f_2 = 2;
+              message Field4 {
+              }
+              optional Field4 f_4 = 4;
+            }
+            optional Field4 f_4 = 4;
+          }
+          optional Field2 f_2 = 2;
+          message Field4 {
+            message Field2 {
+              optional int64 f_2 = 2;
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+            message Field2 {
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field5 f_5 = 5;
+          optional int64 f_6 = 6;
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+          message Field2 {
+            message Field3 {
+            }
+            optional Field3 f_3 = 3;
+            message Field4 {
+            }
+            optional Field4 f_4 = 4;
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+            message Field2 {
+            }
+            optional Field2 f_2 = 2;
+            message Field3 {
+              optional int64 f_2 = 2;
+              message Field3 {
+              }
+              optional Field3 f_3 = 3;
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+            message Field2 {
+              optional int64 f_2 = 2;
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field5 f_5 = 5;
+          message Field7 {
+          }
+          optional Field7 f_7 = 7;
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field2 {
+            message Field2 {
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+          message Field1 {
+            message Field2 {
+              message Field3 {
+              }
+              optional Field3 f_3 = 3;
+              message Field4 {
+              }
+              optional Field4 f_4 = 4;
+            }
+            optional Field2 f_2 = 2;
+            message Field3 {
+              message Field2 {
+              }
+              optional Field2 f_2 = 2;
+              message Field3 {
+                optional int64 f_2 = 2;
+                message Field3 {
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field3 f_3 = 3;
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field1 f_1 = 1;
+          optional int64 f_3 = 3;
+        }
+        optional Field5 f_5 = 5;
+      }
+      optional Field5 f_5 = 5;
+      message Field8 {
+      }
+      optional Field8 f_8 = 8;
+      message Field9 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field1 {
+            message Field3 {
+              message Field1 {
+                message Field1 {
+                  message Field5 {
+                    message Field1 {
+                    }
+                    optional Field1 f_1 = 1;
+                  }
+                  optional Field5 f_5 = 5;
+                  message Field6 {
+                  }
+                  optional Field6 f_6 = 6;
+                  message Field7 {
+                  }
+                  optional Field7 f_7 = 7;
+                }
+                optional Field1 f_1 = 1;
+                message Field2 {
+                }
+                optional Field2 f_2 = 2;
+                message Field3 {
+                  message Field1 {
+                    message Field5 {
+                      message Field1 {
+                      }
+                      optional Field1 f_1 = 1;
+                    }
+                    optional Field5 f_5 = 5;
+                    message Field6 {
+                    }
+                    optional Field6 f_6 = 6;
+                    message Field7 {
+                    }
+                    optional Field7 f_7 = 7;
+                  }
+                  optional Field1 f_1 = 1;
+                  message Field2 {
+                  }
+                  optional Field2 f_2 = 2;
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field1 f_1 = 1;
+            }
+            optional Field3 f_3 = 3;
+            message Field4 {
+              message Field1 {
+                message Field2 {
+                }
+                optional Field2 f_2 = 2;
+              }
+              optional Field1 f_1 = 1;
+            }
+            optional Field4 f_4 = 4;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field9 f_9 = 9;
+      message Field11 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field2 {
+            optional int64 f_1 = 1;
+            optional int64 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field11 f_11 = 11;
+      message Field12 {
+      }
+      optional Field12 f_12 = 12;
+      message Field14 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field2 {
+            optional int64 f_1 = 1;
+            optional int64 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field14 f_14 = 14;
+      message Field15 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field15 f_15 = 15;
+      message Field17 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field17 f_17 = 17;
+      message Field19 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field2 {
+            optional int64 f_1 = 1;
+            optional int64 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field19 f_19 = 19;
+      message Field21 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field21 f_21 = 21;
+      message Field22 {
+      }
+      optional Field22 f_22 = 22;
+      message Field23 {
+      }
+      optional Field23 f_23 = 23;
+      message Field24 {
+      }
+      optional Field24 f_24 = 24;
+    }
+    optional Field1 f_1 = 1;
+    message Field2 {
+      message Field1 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+        }
+        optional Field5 f_5 = 5;
+        message Field6 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+          }
+          optional Field5 f_5 = 5;
+          message Field7 {
+          }
+          optional Field7 f_7 = 7;
+        }
+        optional Field6 f_6 = 6;
+        message Field7 {
+        }
+        optional Field7 f_7 = 7;
+        message Field8 {
+        }
+        optional Field8 f_8 = 8;
+        message Field10 {
+        }
+        optional Field10 f_10 = 10;
+        message Field12 {
+        }
+        optional Field12 f_12 = 12;
+        message Field13 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+        }
+        optional Field13 f_13 = 13;
+        message Field15 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field15 f_15 = 15;
+        message Field18 {
+        }
+        optional Field18 f_18 = 18;
+      }
+      optional Field1 f_1 = 1;
+      message Field4 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field4 f_4 = 4;
+      message Field9 {
+      }
+      optional Field9 f_9 = 9;
+      message Field11 {
+        message Field1 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+          }
+          optional Field5 f_5 = 5;
+          message Field6 {
+          }
+          optional Field6 f_6 = 6;
+          message Field9 {
+          }
+          optional Field9 f_9 = 9;
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field11 f_11 = 11;
+      message Field14 {
+        message Field1 {
+          message Field1 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+            message Field2 {
+              message Field2 {
+                message Field1 {
+                  message Field1 {
+                  }
+                  optional Field1 f_1 = 1;
+                }
+                optional Field1 f_1 = 1;
+                message Field3 {
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field2 f_2 = 2;
+            }
+            optional Field2 f_2 = 2;
+            message Field3 {
+              message Field4 {
+                message Field1 {
+                  message Field1 {
+                  }
+                  optional Field1 f_1 = 1;
+                }
+                optional Field1 f_1 = 1;
+                message Field3 {
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field4 f_4 = 4;
+              message Field5 {
+                message Field1 {
+                  message Field1 {
+                  }
+                  optional Field1 f_1 = 1;
+                }
+                optional Field1 f_1 = 1;
+                message Field3 {
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field5 f_5 = 5;
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field14 f_14 = 14;
+      message Field17 {
+      }
+      optional Field17 f_17 = 17;
+      message Field18 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field18 f_18 = 18;
+      message Field20 {
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field20 f_20 = 20;
+      message Field22 {
+      }
+      optional Field22 f_22 = 22;
+      message Field23 {
+      }
+      optional Field23 f_23 = 23;
+      message Field24 {
+      }
+      optional Field24 f_24 = 24;
+    }
+    optional Field2 f_2 = 2;
+    message Field3 {
+      message Field2 {
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field7 {
+        }
+        optional Field7 f_7 = 7;
+        message Field8 {
+        }
+        optional Field8 f_8 = 8;
+        message Field14 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field14 f_14 = 14;
+        message Field16 {
+        }
+        optional Field16 f_16 = 16;
+        message Field17 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field17 f_17 = 17;
+        message Field18 {
+        }
+        optional Field18 f_18 = 18;
+        message Field19 {
+        }
+        optional Field19 f_19 = 19;
+        message Field20 {
+        }
+        optional Field20 f_20 = 20;
+        message Field21 {
+        }
+        optional Field21 f_21 = 21;
+        message Field22 {
+        }
+        optional Field22 f_22 = 22;
+        message Field23 {
+        }
+        optional Field23 f_23 = 23;
+        message Field27 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field27 f_27 = 27;
+        message Field29 {
+        }
+        optional Field29 f_29 = 29;
+        message Field30 {
+        }
+        optional Field30 f_30 = 30;
+        message Field31 {
+        }
+        optional Field31 f_31 = 31;
+        message Field32 {
+        }
+        optional Field32 f_32 = 32;
+        message Field34 {
+        }
+        optional Field34 f_34 = 34;
+        message Field37 {
+        }
+        optional Field37 f_37 = 37;
+        message Field38 {
+        }
+        optional Field38 f_38 = 38;
+        message Field39 {
+        }
+        optional Field39 f_39 = 39;
+        message Field41 {
+        }
+        optional Field41 f_41 = 41;
+        message Field43 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field43 f_43 = 43;
+        message Field45 {
+          message Field1 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field45 f_45 = 45;
+        message Field46 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+        }
+        optional Field46 f_46 = 46;
+        message Field47 {
+        }
+        optional Field47 f_47 = 47;
+      }
+      optional Field3 f_3 = 3;
+      message Field4 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field5 f_5 = 5;
+      }
+      optional Field4 f_4 = 4;
+      message Field7 {
+      }
+      optional Field7 f_7 = 7;
+      message Field12 {
+      }
+      optional Field12 f_12 = 12;
+      message Field13 {
+      }
+      optional Field13 f_13 = 13;
+      message Field14 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field4 f_4 = 4;
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+        }
+        optional Field3 f_3 = 3;
+      }
+      optional Field14 f_14 = 14;
+      message Field15 {
+      }
+      optional Field15 f_15 = 15;
+      message Field16 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field16 f_16 = 16;
+      message Field18 {
+      }
+      optional Field18 f_18 = 18;
+      message Field19 {
+        message Field4 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+        message Field6 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+        }
+        optional Field6 f_6 = 6;
+        message Field7 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+        }
+        optional Field7 f_7 = 7;
+        message Field8 {
+        }
+        optional Field8 f_8 = 8;
+        message Field9 {
+        }
+        optional Field9 f_9 = 9;
+      }
+      optional Field19 f_19 = 19;
+      message Field20 {
+      }
+      optional Field20 f_20 = 20;
+      message Field22 {
+      }
+      optional Field22 f_22 = 22;
+      message Field24 {
+      }
+      optional Field24 f_24 = 24;
+      message Field25 {
+      }
+      optional Field25 f_25 = 25;
+      message Field26 {
+      }
+      optional Field26 f_26 = 26;
+    }
+    optional Field3 f_3 = 3;
+    optional string f_6 = 6;
+    optional int64 f_7 = 7;
+    message Field9 {
+      message Field1 {
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field1 f_1 = 1;
+      message Field2 {
+        message Field3 {
+          optional int64 f_2 = 2;
+        }
+        optional Field3 f_3 = 3;
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field3 f_3 = 3;
+      message Field4 {
+      }
+      optional Field4 f_4 = 4;
+      message Field7 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field7 f_7 = 7;
+      message Field8 {
+        optional int64 f_1 = 1;
+        optional string f_2 = 2;
+      }
+      optional Field8 f_8 = 8;
+      message Field9 {
+      }
+      optional Field9 f_9 = 9;
+      message Field11 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field11 f_11 = 11;
+    }
+    optional Field9 f_9 = 9;
+    repeated int64 f_11 = 11;
+    message Field12 {
+      message Field2 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field3 f_3 = 3;
+      message Field4 {
+      }
+      optional Field4 f_4 = 4;
+    }
+    optional Field12 f_12 = 12;
+    message Field13 {
+    }
+    optional Field13 f_13 = 13;
+    message Field15 {
+      message Field3 {
+        optional int64 f_1 = 1;
+      }
+      optional Field3 f_3 = 3;
+    }
+    optional Field15 f_15 = 15;
+    message Field18 {
+      message Field169945741 {
+        message Field1 {
+          message Field1 {
+            repeated int64 f_4 = 4;
+            optional int64 f_5 = 5;
+            optional int64 f_6 = 6;
+            optional int64 f_7 = 7;
+            optional int64 f_8 = 8;
+            optional int64 f_11 = 11;
+            optional int64 f_12 = 12;
+            optional int64 f_13 = 13;
+            optional int64 f_15 = 15;
+            optional int64 f_16 = 16;
+            optional int64 f_17 = 17;
+            optional int64 f_18 = 18;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field169945741 f_169945741 = 169945741;
+    }
+    optional Field18 f_18 = 18;
+    message Field19 {
+      message Field1 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field1 f_1 = 1;
+      message Field2 {
+        repeated int64 f_1 = 1;
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field3 f_3 = 3;
+      message Field5 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field5 f_5 = 5;
+      message Field6 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field6 f_6 = 6;
+      message Field7 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field7 f_7 = 7;
+      message Field8 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field8 f_8 = 8;
+    }
+    optional Field19 f_19 = 19;
+    message Field20 {
+      optional int64 f_1 = 1;
+      optional string f_2 = 2;
+      message Field3 {
+        optional string f_1 = 1;
+        message Field2 {
+          message Field1 {
+            repeated int64 f_4 = 4;
+            optional int64 f_5 = 5;
+            optional int64 f_6 = 6;
+            optional int64 f_7 = 7;
+            optional int64 f_8 = 8;
+            optional int64 f_11 = 11;
+            optional int64 f_12 = 12;
+            optional int64 f_13 = 13;
+            optional int64 f_15 = 15;
+            optional int64 f_16 = 16;
+            optional int64 f_17 = 17;
+            optional int64 f_18 = 18;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field3 f_3 = 3;
+    }
+    optional Field20 f_20 = 20;
+    message Field21 {
+      message Field2 {
+        message Field2 {
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+        }
+        optional Field2 f_2 = 2;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+        }
+        optional Field5 f_5 = 5;
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field2 {
+          optional int64 f_1 = 1;
+        }
+        optional Field2 f_2 = 2;
+        message Field4 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field3 f_3 = 3;
+      message Field5 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field5 f_5 = 5;
+      message Field6 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field6 f_6 = 6;
+      message Field7 {
+        optional int64 f_1 = 1;
+        optional string f_2 = 2;
+        optional string f_3 = 3;
+      }
+      optional Field7 f_7 = 7;
+      message Field8 {
+        message Field3 {
+          message Field1 {
+            message Field1 {
+              message Field2 {
+                optional int64 f_1 = 1;
+              }
+              optional Field2 f_2 = 2;
+              message Field4 {
+                message Field2 {
+                }
+                optional Field2 f_2 = 2;
+              }
+              optional Field4 f_4 = 4;
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field1 f_1 = 1;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+          message Field1 {
+            message Field2 {
+              optional int64 f_1 = 1;
+            }
+            optional Field2 f_2 = 2;
+            message Field4 {
+              message Field2 {
+              }
+              optional Field2 f_2 = 2;
+            }
+            optional Field4 f_4 = 4;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field5 f_5 = 5;
+      }
+      optional Field8 f_8 = 8;
+      message Field9 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field9 f_9 = 9;
+      message Field10 {
+        message Field1 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field1 f_1 = 1;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field5 {
+        }
+        optional Field5 f_5 = 5;
+        message Field6 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field6 f_6 = 6;
+        message Field7 {
+        }
+        optional Field7 f_7 = 7;
+        message Field9 {
+        }
+        optional Field9 f_9 = 9;
+        message Field10 {
+        }
+        optional Field10 f_10 = 10;
+      }
+      optional Field10 f_10 = 10;
+      message Field11 {
+      }
+      optional Field11 f_11 = 11;
+      message Field12 {
+      }
+      optional Field12 f_12 = 12;
+      message Field13 {
+      }
+      optional Field13 f_13 = 13;
+      message Field14 {
+      }
+      optional Field14 f_14 = 14;
+      message Field16 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field16 f_16 = 16;
+    }
+    optional Field21 f_21 = 21;
+    message Field22 {
+      optional int64 f_1 = 1;
+      optional string f_2 = 2;
+    }
+    optional Field22 f_22 = 22;
+    message Field25 {
+      message Field1 {
+        message Field1 {
+          message Field1 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field1 f_1 = 1;
+      message Field2 {
+      }
+      optional Field2 f_2 = 2;
+    }
+    optional Field25 f_25 = 25;
+    message Field26 {
+    }
+    optional Field26 f_26 = 26;
+  }
+  optional Field1 f_1 = 1;
+  message Field2 {
+    message Field1 {
+      message Field1 {
+        message Field1 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field1 f_1 = 1;
+    }
+    optional Field1 f_1 = 1;
+    message Field2 {
+    }
+    optional Field2 f_2 = 2;
+  }
+  optional Field2 f_2 = 2;
+}
+
+message GetLibPageMessage {
+  message Field1 {
+    message Field1 {
+      message Field1 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+          }
+          optional Field5 f_5 = 5;
+          message Field7 {
+          }
+          optional Field7 f_7 = 7;
+        }
+        optional Field5 f_5 = 5;
+        message Field6 {
+        }
+        optional Field6 f_6 = 6;
+        message Field7 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field7 f_7 = 7;
+        message Field15 {
+        }
+        optional Field15 f_15 = 15;
+        message Field16 {
+        }
+        optional Field16 f_16 = 16;
+        message Field17 {
+        }
+        optional Field17 f_17 = 17;
+        message Field19 {
+        }
+        optional Field19 f_19 = 19;
+        message Field20 {
+        }
+        optional Field20 f_20 = 20;
+        message Field21 {
+          message Field5 {
+            message Field3 {
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field5 f_5 = 5;
+          message Field6 {
+          }
+          optional Field6 f_6 = 6;
+        }
+        optional Field21 f_21 = 21;
+        message Field25 {
+        }
+        optional Field25 f_25 = 25;
+        message Field30 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field30 f_30 = 30;
+        message Field31 {
+        }
+        optional Field31 f_31 = 31;
+        message Field32 {
+        }
+        optional Field32 f_32 = 32;
+        message Field33 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field33 f_33 = 33;
+        message Field34 {
+        }
+        optional Field34 f_34 = 34;
+        message Field36 {
+        }
+        optional Field36 f_36 = 36;
+        message Field37 {
+        }
+        optional Field37 f_37 = 37;
+        message Field38 {
+        }
+        optional Field38 f_38 = 38;
+        message Field39 {
+        }
+        optional Field39 f_39 = 39;
+        message Field40 {
+        }
+        optional Field40 f_40 = 40;
+        message Field41 {
+        }
+        optional Field41 f_41 = 41;
+      }
+      optional Field1 f_1 = 1;
+      message Field5 {
+        message Field2 {
+          message Field2 {
+            message Field3 {
+              message Field2 {
+              }
+              optional Field2 f_2 = 2;
+            }
+            optional Field3 f_3 = 3;
+            message Field4 {
+              message Field2 {
+              }
+              optional Field2 f_2 = 2;
+            }
+            optional Field4 f_4 = 4;
+          }
+          optional Field2 f_2 = 2;
+          message Field4 {
+            message Field2 {
+              optional int64 f_2 = 2;
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+            message Field2 {
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field5 f_5 = 5;
+          optional int64 f_6 = 6;
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+          message Field2 {
+            message Field3 {
+            }
+            optional Field3 f_3 = 3;
+            message Field4 {
+            }
+            optional Field4 f_4 = 4;
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+            message Field2 {
+            }
+            optional Field2 f_2 = 2;
+            message Field3 {
+              optional int64 f_2 = 2;
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+            message Field2 {
+              optional int64 f_2 = 2;
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field5 f_5 = 5;
+          message Field7 {
+          }
+          optional Field7 f_7 = 7;
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field2 {
+            message Field2 {
+            }
+            optional Field2 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+          message Field1 {
+            message Field2 {
+              message Field3 {
+              }
+              optional Field3 f_3 = 3;
+              message Field4 {
+              }
+              optional Field4 f_4 = 4;
+            }
+            optional Field2 f_2 = 2;
+            message Field3 {
+              message Field2 {
+              }
+              optional Field2 f_2 = 2;
+              message Field3 {
+                optional int64 f_2 = 2;
+              }
+              optional Field3 f_3 = 3;
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field1 f_1 = 1;
+          optional int64 f_3 = 3;
+        }
+        optional Field5 f_5 = 5;
+      }
+      optional Field5 f_5 = 5;
+      message Field8 {
+      }
+      optional Field8 f_8 = 8;
+      message Field9 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field1 {
+            message Field3 {
+              message Field1 {
+                message Field1 {
+                  message Field5 {
+                    message Field1 {
+                    }
+                    optional Field1 f_1 = 1;
+                  }
+                  optional Field5 f_5 = 5;
+                  message Field6 {
+                  }
+                  optional Field6 f_6 = 6;
+                }
+                optional Field1 f_1 = 1;
+                message Field2 {
+                }
+                optional Field2 f_2 = 2;
+                message Field3 {
+                  message Field1 {
+                    message Field5 {
+                      message Field1 {
+                      }
+                      optional Field1 f_1 = 1;
+                    }
+                    optional Field5 f_5 = 5;
+                    message Field6 {
+                    }
+                    optional Field6 f_6 = 6;
+                  }
+                  optional Field1 f_1 = 1;
+                  message Field2 {
+                  }
+                  optional Field2 f_2 = 2;
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field1 f_1 = 1;
+            }
+            optional Field3 f_3 = 3;
+            message Field4 {
+              message Field1 {
+                message Field2 {
+                }
+                optional Field2 f_2 = 2;
+              }
+              optional Field1 f_1 = 1;
+            }
+            optional Field4 f_4 = 4;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field9 f_9 = 9;
+      message Field11 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field2 {
+            optional int64 f_1 = 1;
+            optional int64 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field11 f_11 = 11;
+      message Field12 {
+      }
+      optional Field12 f_12 = 12;
+      message Field14 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field2 {
+            optional int64 f_1 = 1;
+            optional int64 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field14 f_14 = 14;
+      message Field15 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field15 f_15 = 15;
+      message Field17 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field17 f_17 = 17;
+      message Field19 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field2 {
+            optional int64 f_1 = 1;
+            optional int64 f_2 = 2;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field19 f_19 = 19;
+      message Field22 {
+      }
+      optional Field22 f_22 = 22;
+      message Field23 {
+      }
+      optional Field23 f_23 = 23;
+    }
+    optional Field1 f_1 = 1;
+    message Field2 {
+      message Field1 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+        }
+        optional Field5 f_5 = 5;
+        message Field6 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+          }
+          optional Field5 f_5 = 5;
+          message Field7 {
+          }
+          optional Field7 f_7 = 7;
+        }
+        optional Field6 f_6 = 6;
+        message Field7 {
+        }
+        optional Field7 f_7 = 7;
+        message Field8 {
+        }
+        optional Field8 f_8 = 8;
+        message Field10 {
+        }
+        optional Field10 f_10 = 10;
+        message Field12 {
+        }
+        optional Field12 f_12 = 12;
+        message Field13 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+        }
+        optional Field13 f_13 = 13;
+        message Field15 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field15 f_15 = 15;
+        message Field18 {
+        }
+        optional Field18 f_18 = 18;
+      }
+      optional Field1 f_1 = 1;
+      message Field4 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field4 f_4 = 4;
+      message Field9 {
+      }
+      optional Field9 f_9 = 9;
+      message Field11 {
+        message Field1 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+          message Field5 {
+          }
+          optional Field5 f_5 = 5;
+          message Field6 {
+          }
+          optional Field6 f_6 = 6;
+          message Field9 {
+          }
+          optional Field9 f_9 = 9;
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field11 f_11 = 11;
+      message Field14 {
+        message Field1 {
+          message Field1 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+            message Field2 {
+              message Field2 {
+                message Field1 {
+                  message Field1 {
+                  }
+                  optional Field1 f_1 = 1;
+                }
+                optional Field1 f_1 = 1;
+                message Field3 {
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field2 f_2 = 2;
+            }
+            optional Field2 f_2 = 2;
+            message Field3 {
+              message Field4 {
+                message Field1 {
+                  message Field1 {
+                  }
+                  optional Field1 f_1 = 1;
+                }
+                optional Field1 f_1 = 1;
+                message Field3 {
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field4 f_4 = 4;
+              message Field5 {
+                message Field1 {
+                  message Field1 {
+                  }
+                  optional Field1 f_1 = 1;
+                }
+                optional Field1 f_1 = 1;
+                message Field3 {
+                }
+                optional Field3 f_3 = 3;
+              }
+              optional Field5 f_5 = 5;
+            }
+            optional Field3 f_3 = 3;
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field14 f_14 = 14;
+      message Field17 {
+      }
+      optional Field17 f_17 = 17;
+      message Field18 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field18 f_18 = 18;
+      message Field20 {
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field20 f_20 = 20;
+      message Field23 {
+      }
+      optional Field23 f_23 = 23;
+    }
+    optional Field2 f_2 = 2;
+    message Field3 {
+      message Field2 {
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field7 {
+        }
+        optional Field7 f_7 = 7;
+        message Field8 {
+        }
+        optional Field8 f_8 = 8;
+        message Field14 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field14 f_14 = 14;
+        message Field16 {
+        }
+        optional Field16 f_16 = 16;
+        message Field17 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field17 f_17 = 17;
+        message Field18 {
+        }
+        optional Field18 f_18 = 18;
+        message Field19 {
+        }
+        optional Field19 f_19 = 19;
+        message Field20 {
+        }
+        optional Field20 f_20 = 20;
+        message Field21 {
+        }
+        optional Field21 f_21 = 21;
+        message Field22 {
+        }
+        optional Field22 f_22 = 22;
+        message Field23 {
+        }
+        optional Field23 f_23 = 23;
+        message Field27 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field27 f_27 = 27;
+        message Field29 {
+        }
+        optional Field29 f_29 = 29;
+        message Field30 {
+        }
+        optional Field30 f_30 = 30;
+        message Field31 {
+        }
+        optional Field31 f_31 = 31;
+        message Field32 {
+        }
+        optional Field32 f_32 = 32;
+        message Field34 {
+        }
+        optional Field34 f_34 = 34;
+        message Field37 {
+        }
+        optional Field37 f_37 = 37;
+        message Field38 {
+        }
+        optional Field38 f_38 = 38;
+        message Field39 {
+        }
+        optional Field39 f_39 = 39;
+        message Field41 {
+        }
+        optional Field41 f_41 = 41;
+      }
+      optional Field3 f_3 = 3;
+      message Field4 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field4 f_4 = 4;
+      message Field7 {
+      }
+      optional Field7 f_7 = 7;
+      message Field12 {
+      }
+      optional Field12 f_12 = 12;
+      message Field13 {
+      }
+      optional Field13 f_13 = 13;
+      message Field14 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field4 f_4 = 4;
+        }
+        optional Field2 f_2 = 2;
+        message Field3 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+          message Field4 {
+          }
+          optional Field4 f_4 = 4;
+        }
+        optional Field3 f_3 = 3;
+      }
+      optional Field14 f_14 = 14;
+      message Field15 {
+      }
+      optional Field15 f_15 = 15;
+      message Field16 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field16 f_16 = 16;
+      message Field18 {
+      }
+      optional Field18 f_18 = 18;
+      message Field19 {
+        message Field4 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field4 f_4 = 4;
+        message Field6 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+        }
+        optional Field6 f_6 = 6;
+        message Field7 {
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+          message Field3 {
+          }
+          optional Field3 f_3 = 3;
+        }
+        optional Field7 f_7 = 7;
+        message Field8 {
+        }
+        optional Field8 f_8 = 8;
+      }
+      optional Field19 f_19 = 19;
+      message Field20 {
+      }
+      optional Field20 f_20 = 20;
+      message Field24 {
+      }
+      optional Field24 f_24 = 24;
+      message Field25 {
+      }
+      optional Field25 f_25 = 25;
+    }
+    optional Field3 f_3 = 3;
+    optional string f_4 = 4;
+    optional string f_6 = 6;
+    optional int64 f_7 = 7;
+    message Field9 {
+      message Field1 {
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+          message Field2 {
+          }
+          optional Field2 f_2 = 2;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field1 f_1 = 1;
+      message Field2 {
+        message Field3 {
+          optional int64 f_2 = 2;
+        }
+        optional Field3 f_3 = 3;
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field3 f_3 = 3;
+      message Field4 {
+      }
+      optional Field4 f_4 = 4;
+      message Field7 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field7 f_7 = 7;
+      message Field8 {
+        optional int64 f_1 = 1;
+        optional string f_2 = 2;
+      }
+      optional Field8 f_8 = 8;
+      message Field9 {
+      }
+      optional Field9 f_9 = 9;
+    }
+    optional Field9 f_9 = 9;
+    repeated int64 f_11 = 11;
+    message Field12 {
+      message Field2 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field3 f_3 = 3;
+      message Field4 {
+      }
+      optional Field4 f_4 = 4;
+    }
+    optional Field12 f_12 = 12;
+    message Field13 {
+    }
+    optional Field13 f_13 = 13;
+    message Field15 {
+      message Field3 {
+        optional int64 f_1 = 1;
+      }
+      optional Field3 f_3 = 3;
+    }
+    optional Field15 f_15 = 15;
+    message Field18 {
+      message Field169945741 {
+        message Field1 {
+          message Field1 {
+            repeated int64 f_4 = 4;
+            optional int64 f_5 = 5;
+            optional int64 f_6 = 6;
+            optional int64 f_7 = 7;
+            optional int64 f_8 = 8;
+            optional int64 f_11 = 11;
+            optional int64 f_12 = 12;
+            optional int64 f_13 = 13;
+            optional int64 f_15 = 15;
+            optional int64 f_16 = 16;
+            optional int64 f_17 = 17;
+            optional int64 f_18 = 18;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field169945741 f_169945741 = 169945741;
+    }
+    optional Field18 f_18 = 18;
+    message Field19 {
+      message Field1 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field1 f_1 = 1;
+      message Field2 {
+        repeated int64 f_1 = 1;
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field3 f_3 = 3;
+      message Field5 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field5 f_5 = 5;
+      message Field6 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field6 f_6 = 6;
+      message Field7 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field7 f_7 = 7;
+      message Field8 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field8 f_8 = 8;
+    }
+    optional Field19 f_19 = 19;
+    message Field20 {
+      optional int64 f_1 = 1;
+      optional string f_2 = 2;
+      message Field3 {
+        optional string f_1 = 1;
+        message Field2 {
+          message Field1 {
+            repeated int64 f_4 = 4;
+            optional int64 f_5 = 5;
+            optional int64 f_6 = 6;
+            optional int64 f_7 = 7;
+            optional int64 f_8 = 8;
+            optional int64 f_11 = 11;
+            optional int64 f_12 = 12;
+            optional int64 f_13 = 13;
+            optional int64 f_15 = 15;
+            optional int64 f_16 = 16;
+            optional int64 f_17 = 17;
+            optional int64 f_18 = 18;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field3 f_3 = 3;
+    }
+    optional Field20 f_20 = 20;
+    message Field21 {
+      message Field2 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+        message Field4 {
+        }
+        optional Field4 f_4 = 4;
+        message Field5 {
+        }
+        optional Field5 f_5 = 5;
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field2 {
+          optional int64 f_1 = 1;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field3 f_3 = 3;
+      message Field5 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field5 f_5 = 5;
+      message Field6 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field6 f_6 = 6;
+      message Field7 {
+        optional int64 f_1 = 1;
+        optional string f_2 = 2;
+        optional string f_3 = 3;
+      }
+      optional Field7 f_7 = 7;
+      message Field8 {
+        message Field3 {
+          message Field1 {
+            message Field1 {
+              message Field2 {
+                optional int64 f_1 = 1;
+              }
+              optional Field2 f_2 = 2;
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field3 f_3 = 3;
+        message Field4 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field4 f_4 = 4;
+      }
+      optional Field8 f_8 = 8;
+      message Field9 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field9 f_9 = 9;
+      message Field10 {
+        message Field1 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field1 f_1 = 1;
+        message Field3 {
+        }
+        optional Field3 f_3 = 3;
+        message Field5 {
+        }
+        optional Field5 f_5 = 5;
+        message Field6 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field6 f_6 = 6;
+        message Field7 {
+        }
+        optional Field7 f_7 = 7;
+        message Field9 {
+        }
+        optional Field9 f_9 = 9;
+        message Field10 {
+        }
+        optional Field10 f_10 = 10;
+      }
+      optional Field10 f_10 = 10;
+      message Field11 {
+      }
+      optional Field11 f_11 = 11;
+      message Field12 {
+      }
+      optional Field12 f_12 = 12;
+      message Field13 {
+      }
+      optional Field13 f_13 = 13;
+    }
+    optional Field21 f_21 = 21;
+    message Field22 {
+      optional int64 f_1 = 1;
+    }
+    optional Field22 f_22 = 22;
+    message Field25 {
+      message Field1 {
+        message Field1 {
+          message Field1 {
+            message Field1 {
+            }
+            optional Field1 f_1 = 1;
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field1 f_1 = 1;
+      message Field2 {
+      }
+      optional Field2 f_2 = 2;
+    }
+    optional Field25 f_25 = 25;
+  }
+  optional Field1 f_1 = 1;
+  message Field2 {
+    message Field1 {
+      message Field1 {
+        message Field1 {
+          message Field1 {
+          }
+          optional Field1 f_1 = 1;
+        }
+        optional Field1 f_1 = 1;
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field1 f_1 = 1;
+    }
+    optional Field1 f_1 = 1;
+    message Field2 {
+    }
+    optional Field2 f_2 = 2;
+  }
+  optional Field2 f_2 = 2;
+}
+
+message LibStateResponseFixMessage {
+  message Field1 {
+    message Field2 {
+      message Field2 {
+        optional string f_4 = 4;
+      }
+      optional Field2 f_2 = 2;
+    }
+    optional Field2 f_2 = 2;
+  }
+  optional Field1 f_1 = 1;
+}
+
+message SetCaptionMessage {
+  optional string f_2 = 2;
+  optional string f_3 = 3;
+}
+
+message SetFavoriteMessage {
+  message Field1 {
+    optional string f_2 = 2;
+  }
+  optional Field1 f_1 = 1;
+  message Field2 {
+    optional int64 f_1 = 1;
+  }
+  optional Field2 f_2 = 2;
+  message Field3 {
+    message Field1 {
+      message Field19 {
+      }
+      optional Field19 f_19 = 19;
+    }
+    optional Field1 f_1 = 1;
+  }
+  optional Field3 f_3 = 3;
+}
+
+message SetArchivedMessage {
+  message Field1 {
+    optional string f_1 = 1;
+    message Field2 {
+      optional int64 f_1 = 1;
+    }
+    optional Field2 f_2 = 2;
+  }
+  repeated Field1 f_1 = 1;
+  optional int64 f_3 = 3;
+}
+
+message GetDownloadURLsMessage {
+  message Field1 {
+    message Field1 {
+      optional string f_1 = 1;
+    }
+    optional Field1 f_1 = 1;
+  }
+  optional Field1 f_1 = 1;
+  message Field2 {
+    message Field1 {
+      message Field7 {
+        message Field2 {
+        }
+        optional Field2 f_2 = 2;
+      }
+      optional Field7 f_7 = 7;
+    }
+    optional Field1 f_1 = 1;
+    message Field5 {
+      message Field2 {
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+      }
+      optional Field3 f_3 = 3;
+      message Field5 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+        optional int64 f_3 = 3;
+      }
+      optional Field5 f_5 = 5;
+    }
+    optional Field5 f_5 = 5;
+  }
+  optional Field2 f_2 = 2;
+}
+
+message RestoreFromTrashMessage {
+  optional int64 f_2 = 2;
+  optional string f_3 = 3;
+  optional int64 f_4 = 4;
+  message Field8 {
+    message Field4 {
+      message Field2 {
+      }
+      optional Field2 f_2 = 2;
+      message Field3 {
+        message Field1 {
+        }
+        optional Field1 f_1 = 1;
+      }
+      optional Field3 f_3 = 3;
+    }
+    optional Field4 f_4 = 4;
+  }
+  optional Field8 f_8 = 8;
+  message Field9 {
+    optional int64 f_1 = 1;
+    message Field2 {
+      optional int64 f_1 = 1;
+      optional string f_2 = 2;
+    }
+    optional Field2 f_2 = 2;
+  }
+  optional Field9 f_9 = 9;
+}
+
