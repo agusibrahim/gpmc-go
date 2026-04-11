@@ -29,7 +29,7 @@ var (
 		nested := NewMessageDef()
 		nested.AddField(1, FieldTypeBytes, false)
 		nested.AddField(2, FieldTypeMessage, false) // Empty message
-		def.AddMessageField(1, nested, false)
+		def.AddMessageField(1, nested, true) // seen_repeated in Python
 		return def
 	}()
 
@@ -96,7 +96,7 @@ var (
 	MoveToTrashDef = func() *MessageDef {
 		def := NewMessageDef()
 		def.AddField(2, FieldTypeInt, false)
-		def.AddField(3, FieldTypeString, false) // Actually repeated in practice
+		def.AddField(3, FieldTypeString, true) // Repeated: array of dedup keys
 		def.AddField(4, FieldTypeInt, false)
 		def.AddField(8, FieldTypeMessage, false)
 		def.AddField(9, FieldTypeMessage, false)
@@ -107,7 +107,7 @@ var (
 	DeletePermanentlyDef = func() *MessageDef {
 		def := NewMessageDef()
 		def.AddField(2, FieldTypeInt, false)
-		def.AddField(3, FieldTypeString, false) // Actually repeated in practice
+		def.AddField(3, FieldTypeString, true) // Repeated: array of dedup keys
 		def.AddField(4, FieldTypeInt, false)
 		def.AddField(8, FieldTypeMessage, false)
 		def.AddField(9, FieldTypeString, false)

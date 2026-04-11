@@ -7,9 +7,13 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/xob0t/gpmc-go/internal/proto"
+	"github.com/xob0t/gpmc-go/internal/proto/pb"
+	pbproto "google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/encoding/protowire"
 )
 
 // GetUploadToken obtains an upload token for a file
@@ -55,11 +59,13 @@ func (a *Api) GetUploadToken(shaHashB64 string, fileSize int) (string, error) {
 // FindRemoteMediaByHash checks if a file with the given hash exists in Google Photos
 func (a *Api) FindRemoteMediaByHash(sha1Hash []byte) (string, error) {
 	protoBody := map[string]interface{}{
-		"1": map[string]interface{}{
-			"1": map[string]interface{}{
-				"1": sha1Hash,
+		"1": []map[string]interface{}{
+			{
+				"1": map[string]interface{}{
+					"1": sha1Hash,
+				},
+				"2": map[string]interface{}{},
 			},
-			"2": map[string]interface{}{},
 		},
 	}
 
@@ -89,27 +95,71 @@ func (a *Api) FindRemoteMediaByHash(sha1Hash []byte) (string, error) {
 	}
 
 	body, _ := io.ReadAll(resp.Body)
-	decodedMessage, err := proto.DecodeMessage(body, proto.FindRemoteMediaByHashDef)
-	if err != nil {
-		return "", err
-	}
 
-	// Extract media key from nested response
-	if field1, ok := decodedMessage["1"].(map[string]interface{}); ok {
-		if field2, ok := field1["2"].(map[string]interface{}); ok {
-			if field1, ok := field2["2"].(map[string]interface{}); ok {
-				if mediaKey, ok := field1["1"].(string); ok {
-					return mediaKey, nil
+	// Extract media key dynamically: decoded_message["1"]["2"]["2"]["1"]
+	b := body
+	for len(b) > 0 {
+		num, typ, n := protowire.ConsumeTag(b)
+		if n < 0 { break }
+		b = b[n:]
+		if num == 1 && typ == protowire.BytesType {
+			v1, n2 := protowire.ConsumeBytes(b)
+			if n2 >= 0 {
+				v1b := v1
+				for len(v1b) > 0 {
+					num2, typ2, n3 := protowire.ConsumeTag(v1b)
+					if n3 < 0 { break }
+					v1b = v1b[n3:]
+					if num2 == 2 && typ2 == protowire.BytesType {
+						v2, n4 := protowire.ConsumeBytes(v1b)
+						if n4 >= 0 {
+							v2b := v2
+							for len(v2b) > 0 {
+								num3, typ3, n5 := protowire.ConsumeTag(v2b)
+								if n5 < 0 { break }
+								v2b = v2b[n5:]
+								if num3 == 2 && typ3 == protowire.BytesType {
+									v3, n6 := protowire.ConsumeBytes(v2b)
+									if n6 >= 0 {
+										v3b := v3
+										for len(v3b) > 0 {
+											num4, typ4, n7 := protowire.ConsumeTag(v3b)
+											if n7 < 0 { break }
+											v3b = v3b[n7:]
+											if num4 == 1 && typ4 == protowire.BytesType {
+												v4, n8 := protowire.ConsumeBytes(v3b)
+												if n8 >= 0 {
+													return string(v4), nil
+												}
+											}
+											nskip := protowire.ConsumeFieldValue(num4, typ4, v3b)
+											if nskip < 0 { break }
+											v3b = v3b[nskip:]
+										}
+									}
+								}
+								nskip := protowire.ConsumeFieldValue(num3, typ3, v2b)
+								if nskip < 0 { break }
+								v2b = v2b[nskip:]
+							}
+						}
+					}
+					nskip := protowire.ConsumeFieldValue(num2, typ2, v1b)
+					if nskip < 0 { break }
+					v1b = v1b[nskip:]
 				}
 			}
 		}
+		nskip := protowire.ConsumeFieldValue(num, typ, b)
+		if nskip < 0 { break }
+		b = b[nskip:]
 	}
 
 	return "", nil // Not found
 }
 
 // UploadFile uploads file data to Google Photos
-func (a *Api) UploadFile(file io.Reader, uploadToken string) (map[string]interface{}, error) {
+func (a *Api) UploadFile(file io.Reader, uploadToken string) (*pb.CommitUploadMessage_Field1_Field1, error) {
 	token, err := a.BearerToken()
 	if err != nil {
 		return nil, err
@@ -139,46 +189,47 @@ func (a *Api) UploadFile(file io.Reader, uploadToken string) (map[string]interfa
 	}
 
 	body, _ := io.ReadAll(resp.Body)
-	decodedMessage, err := proto.DecodeMessage(body, nil)
-	if err != nil {
-		return nil, err
+	decodedMessage := &pb.CommitUploadMessage_Field1_Field1{}
+	if err := pbproto.Unmarshal(body, decodedMessage); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal upload response: %w", err)
 	}
 
 	return decodedMessage, nil
 }
 
 // CommitUpload commits an uploaded file to Google Photos
-func (a *Api) CommitUpload(uploadResp map[string]interface{}, fileName string, sha1Hash []byte, quality string, uploadTimestamp int) (string, error) {
-	qualityMap := map[string]int{
+func (a *Api) CommitUpload(uploadResp *pb.CommitUploadMessage_Field1_Field1, fileName string, sha1Hash []byte, quality string, uploadTimestamp int) (string, error) {
+	qualityMap := map[string]int64{
 		"saver":    1,
 		"original": 3,
 	}
-
 	if uploadTimestamp == 0 {
 		uploadTimestamp = int(time.Now().Unix())
 	}
-
-	protoBody := map[string]interface{}{
-		"1": map[string]interface{}{
-			"1": uploadResp,
-			"2": fileName,
-			"3": sha1Hash,
-			"4": map[string]interface{}{
-				"1": int64(uploadTimestamp),
-				"2": int64(46000000),
+	protoBody := &pb.CommitUploadMessage{
+		F_1: &pb.CommitUploadMessage_Field1{
+			F_1: uploadResp,
+			F_2: protoPointString(fileName),
+			F_3: sha1Hash,
+			F_4: &pb.CommitUploadMessage_Field1_Field4{
+				F_1: protoPoint(int64(uploadTimestamp)),
+				F_2: protoPoint(int64(46000000)),
 			},
-			"7": int64(qualityMap[quality]),
-			"10": int64(1),
+			F_7: protoPoint(qualityMap[quality]),
+			F_10: protoPoint(int64(1)),
 		},
-		"2": map[string]interface{}{
-			"3": a.model,
-			"4": a.make,
-			"5": int64(a.androidAPIVersion),
+		F_2: &pb.CommitUploadMessage_Field2{
+			F_3: protoPointString(a.model),
+			F_4: protoPointString(a.make),
+			F_5: protoPoint(int64(a.androidAPIVersion)),
 		},
-		"3": []byte{0x01, 0x03},
+		F_3: []byte{0x01, 0x03},
 	}
 
-	serializedData := proto.EncodeMessage(protoBody, proto.CommitUploadDef)
+	serializedData, err := pbproto.Marshal(protoBody)
+	if err != nil {
+		return "", fmt.Errorf("failed to encode commit payload: %w", err)
+	}
 
 	token, err := a.BearerToken()
 	if err != nil {
@@ -206,52 +257,71 @@ func (a *Api) CommitUpload(uploadResp map[string]interface{}, fileName string, s
 	}
 
 	body, _ := io.ReadAll(resp.Body)
-	decodedMessage, err := proto.DecodeMessage(body, proto.CommitUploadDef)
-	if err != nil {
-		return "", fmt.Errorf("upload rejected by API: %w", err)
+	fmt.Printf("COMMIT_UPLOAD RESPONSE %d bytes: %x\n", len(body), body)
+	decodedMessage := &pb.CommitUploadMessage{}
+	if err := pbproto.Unmarshal(body, decodedMessage); err != nil {
+		return "", fmt.Errorf("upload rejected by API (unmarshal error): %w", err)
 	}
 
-	// Extract media key from response
-	if field1, ok := decodedMessage["1"].(map[string]interface{}); ok {
-		if field3, ok := field1["3"].(map[string]interface{}); ok {
-			if mediaKey, ok := field3["1"].(string); ok {
-				return mediaKey, nil
+	// Extract media key from response F_3 which is a byte array containing a nested message with field 1
+	if decodedMessage.F_1 != nil && len(decodedMessage.F_1.F_3) > 0 {
+		b := decodedMessage.F_1.F_3
+		for len(b) > 0 {
+			num, typ, n := protowire.ConsumeTag(b)
+			if n < 0 { break }
+			b = b[n:]
+			if num == 1 && typ == protowire.BytesType {
+				v, n2 := protowire.ConsumeBytes(b)
+				if n2 >= 0 {
+					return string(v), nil
+				}
 			}
+			n3 := protowire.ConsumeFieldValue(num, typ, b)
+			if n3 < 0 { break }
+			b = b[n3:]
 		}
 	}
 
 	return "", fmt.Errorf("could not extract media key from response")
 }
 
+func protoPoint(i int64) *int64 { return &i }
+func protoPointString(s string) *string { return &s }
+func protoPointInt64(i int64) *int64 { return &i }
+
+
 // CreateAlbum creates a new album with the given media items
 func (a *Api) CreateAlbum(albumName string, mediaKeys []string) (string, error) {
 	// Build media keys array for field "4"
-	mediaKeyItems := make([]map[string]interface{}, len(mediaKeys))
-	for i, key := range mediaKeys {
-		mediaKeyItems[i] = map[string]interface{}{
-			"1": map[string]interface{}{
-				"1": key,
+	var mediaKeyItems []*pb.CreateAlbumMessage_Field4
+	for _, key := range mediaKeys {
+		mediaKeyItems = append(mediaKeyItems, &pb.CreateAlbumMessage_Field4{
+			F_1: &pb.CreateAlbumMessage_Field4_Field1{
+				F_1: protoPointString(key),
 			},
-		}
+		})
 	}
 
-	protoBody := map[string]interface{}{
-		"1": albumName,
-		"2": int64(time.Now().Unix()),
-		"3": int64(1),
-		"4": mediaKeyItems,
-		"6": map[string]interface{}{},
-		"7": map[string]interface{}{
-			"1": int64(3),
+	protoBody := &pb.CreateAlbumMessage{
+		F_1: protoPointString(albumName),
+		F_2: protoPointInt64(time.Now().Unix()),
+		F_3: protoPointInt64(1),
+		F_4: mediaKeyItems,
+		F_6: &pb.CreateAlbumMessage_Field6{},
+		F_7: &pb.CreateAlbumMessage_Field7{
+			F_1: protoPointInt64(3),
 		},
-		"8": map[string]interface{}{
-			"3": a.model,
-			"4": a.make,
-			"5": int64(a.androidAPIVersion),
+		F_8: &pb.CreateAlbumMessage_Field8{
+			F_3: protoPointString(a.model),
+			F_4: protoPointString(a.make),
+			F_5: protoPointInt64(int64(a.androidAPIVersion)),
 		},
 	}
 
-	serializedData := proto.EncodeMessage(protoBody, proto.CreateAlbumDef)
+	serializedData, err := pbproto.Marshal(protoBody)
+	if err != nil {
+		return "", fmt.Errorf("failed to encode create album payload: %w", err)
+	}
 
 	token, err := a.BearerToken()
 	if err != nil {
@@ -279,19 +349,38 @@ func (a *Api) CreateAlbum(albumName string, mediaKeys []string) (string, error) 
 	}
 
 	body, _ := io.ReadAll(resp.Body)
-	decodedMessage, err := proto.DecodeMessage(body, proto.CreateAlbumDef)
-	if err != nil {
-		return "", err
-	}
-
-	// Extract album media key
-	if field1, ok := decodedMessage["1"].(map[string]interface{}); ok {
-		if albumKey, ok := field1["1"].(string); ok {
-			return albumKey, nil
+	
+	// Dynamically extract album media key [1][1]
+	b := body
+	for len(b) > 0 {
+		num, typ, n := protowire.ConsumeTag(b)
+		if n < 0 { break }
+		b = b[n:]
+		if num == 1 && typ == protowire.BytesType {
+			v1, n2 := protowire.ConsumeBytes(b)
+			if n2 >= 0 {
+				v1b := v1
+				for len(v1b) > 0 {
+					num2, typ2, n3 := protowire.ConsumeTag(v1b)
+					if n3 < 0 { break }
+					v1b = v1b[n3:]
+					if num2 == 1 && typ2 == protowire.BytesType {
+						v2, n4 := protowire.ConsumeBytes(v1b)
+						if n4 >= 0 {
+							return string(v2), nil
+						}
+					}
+					nskip := protowire.ConsumeFieldValue(num2, typ2, v1b)
+					if nskip < 0 { break }
+					v1b = v1b[nskip:]
+				}
+			}
 		}
+		nskip := protowire.ConsumeFieldValue(num, typ, b)
+		if nskip < 0 { break }
+		b = b[nskip:]
 	}
-
-	return "", fmt.Errorf("could not extract album key from response")
+	return "", fmt.Errorf("album key not found in response")
 }
 
 // AddMediaToAlbum adds media items to an existing album
@@ -580,11 +669,13 @@ func (a *Api) SetArchived(dedupKeys []string, isArchived bool) (map[string]inter
 	}
 
 	headers := map[string]string{
-		"Accept-Encoding": "gzip",
-		"Accept-Language": a.language,
-		"Content-Type":    "application/x-protobuf",
-		"User-Agent":      a.userAgent,
-		"Authorization":   "Bearer " + token,
+		"Accept-Encoding":          "gzip",
+		"Accept-Language":          a.language,
+		"Content-Type":             "application/x-protobuf",
+		"User-Agent":               a.userAgent,
+		"Authorization":            "Bearer " + token,
+		"x-goog-ext-173412678-bin": "CgcIAhClARgC",
+		"x-goog-ext-174067345-bin": "CgIIAg==",
 	}
 
 	resp, err := a.makeRequest("POST", GetPhotosDataURL(EndpointSetArchived), serializedData, headers)
@@ -663,20 +754,28 @@ func (a *Api) GetDownloadURLs(mediaKey string) ([]string, error) {
 	}
 
 	// Extract URLs from response
-	// This is a simplified extraction - the real implementation would need to handle the nested structure
 	var urls []string
-	if field1, ok := decodedMessage["1"].(map[string]interface{}); ok {
-		if field2, ok := field1["2"].(map[string]interface{}); ok {
-			// Extract URLs from nested structure
-			for _, v := range field2 {
-				if urlMap, ok := v.(map[string]interface{}); ok {
-					if url, ok := urlMap["1"].(string); ok {
-						urls = append(urls, url)
-					}
-				}
+
+	// Helper to find all strings in a map recursively
+	var findStrings func(interface{})
+	findStrings = func(v interface{}) {
+		switch val := v.(type) {
+		case string:
+			if len(val) > 10 && (val[:7] == "http://" || val[:8] == "https://") {
+				urls = append(urls, val)
+			}
+		case map[string]interface{}:
+			for _, item := range val {
+				findStrings(item)
+			}
+		case []interface{}:
+			for _, item := range val {
+				findStrings(item)
 			}
 		}
 	}
+
+	findStrings(decodedMessage)
 
 	return urls, nil
 }
@@ -783,6 +882,9 @@ func (a *Api) makeRequest(method, url string, data []byte, headers map[string]st
 
 	// Set headers
 	for k, v := range headers {
+		if strings.ToLower(k) == "accept-encoding" {
+			continue
+		}
 		req.Header.Set(k, v)
 	}
 

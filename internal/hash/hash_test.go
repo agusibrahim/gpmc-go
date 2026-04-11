@@ -5,25 +5,6 @@ import (
 	"testing"
 )
 
-// TestConvertSHA1HashBytes tests hash conversion from bytes
-func TestConvertSHA1HashBytes(t *testing.T) {
-	testHash := []byte{0x01, 0x02, 0x03, 0x04, 0x05}
-	expectedHashB64 := BytesToBase64(testHash)
-
-	// Test conversion
-	convertedBytes, convertedB64, err := ConvertSHA1Hash(expectedHash)
-	if err != nil {
-		t.Fatalf("ConvertSHA1Hash failed: %v", err)
-	}
-
-	if convertedB64 != hashB64 {
-		t.Errorf("Expected hash %s, got %s", hashB64, convertedB64)
-	}
-
-	if hex.EncodeToString(convertedBytes) != expectedHash {
-		t.Errorf("Expected hash bytes %x, got %x", hashBytes, convertedBytes)
-	}
-}
 
 // TestConvertSHA1HashBytes tests hash conversion from bytes
 func TestConvertSHA1HashBytes(t *testing.T) {
