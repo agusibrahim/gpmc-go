@@ -1,5 +1,30 @@
 package client
 
+// ProgressStatus represents the current state of a file upload
+type ProgressStatus string
+
+const (
+	StatusHashing    ProgressStatus = "Hashing"
+	StatusUploading  ProgressStatus = "Uploading"
+	StatusCommitting ProgressStatus = "Committing"
+	StatusDone       ProgressStatus = "Done"
+	StatusError      ProgressStatus = "Error"
+	StatusSkipped    ProgressStatus = "Skipped"
+	StatusBatchMeta  ProgressStatus = "BatchMeta"
+)
+
+// ProgressUpdate represents a single progress update for a file
+type ProgressUpdate struct {
+	ID         string         `json:"id"`
+	Filename   string         `json:"filename"`
+	Status     ProgressStatus `json:"status"`
+	Progress   float64        `json:"progress"` // 0.0 to 1.0
+	Path       string         `json:"path"`
+	Error      string         `json:"error,omitempty"`
+	MediaKey   string         `json:"media_key,omitempty"`
+	TotalFiles int            `json:"total_files,omitempty"`
+}
+
 // uploadOptions contains options for uploading files
 type uploadOptions struct {
 	albumName          string
@@ -15,6 +40,7 @@ type uploadOptions struct {
 	filterRegex        bool
 	filterIgnoreCase   bool
 	filterMatchPath    bool
+	progressChan       chan ProgressUpdate
 }
 
 // UploadOption is a functional option for upload operations
@@ -108,5 +134,12 @@ func WithFilterIgnoreCase(ignoreCase bool) UploadOption {
 func WithFilterMatchPath(matchPath bool) UploadOption {
 	return func(o *uploadOptions) {
 		o.filterMatchPath = matchPath
+	}
+}
+
+// WithProgressChan sets a channel for receiving progress updates
+func WithProgressChan(ch chan ProgressUpdate) UploadOption {
+	return func(o *uploadOptions) {
+		o.progressChan = ch
 	}
 }

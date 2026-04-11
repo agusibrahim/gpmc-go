@@ -50,6 +50,14 @@ func (c *Client) uploadConcurrently(pairs map[string]*UploadOptions, opts *uploa
 		defer bar.Close()
 	}
 
+	// Notify about batch start
+	if opts.progressChan != nil {
+		opts.progressChan <- ProgressUpdate{
+			Status:     StatusBatchMeta,
+			TotalFiles: len(pairs),
+		}
+	}
+
 	// Determine number of workers
 	workers := opts.threads
 	if workers < 1 {
@@ -68,10 +76,29 @@ func (c *Client) uploadConcurrently(pairs map[string]*UploadOptions, opts *uploa
 			sem <- struct{}{}
 			defer func() { <-sem }()
 
+			// Initial status notification
+			if opts.progressChan != nil {
+				opts.progressChan <- ProgressUpdate{
+					ID:       filePath,
+					Filename: filepath.Base(filePath),
+					Path:     filePath,
+					Status:   StatusHashing,
+					Progress: 0.1,
+				}
+			}
+
 			// Upload file
 			mediaKey, err := c.uploadFile(filePath, options, opts)
 			if err != nil {
 				c.logger.Error("Error uploading file", "path", filePath, "error", err)
+				if opts.progressChan != nil {
+					opts.progressChan <- ProgressUpdate{
+						ID:       filePath,
+						Filename: filepath.Base(filePath),
+						Status:   StatusError,
+						Error:    err.Error(),
+					}
+				}
 				return
 			}
 
@@ -80,7 +107,18 @@ func (c *Client) uploadConcurrently(pairs map[string]*UploadOptions, opts *uploa
 			results[filePath] = mediaKey
 			mu.Unlock()
 
-			// Update progress
+			// Success notification
+			if opts.progressChan != nil {
+				opts.progressChan <- ProgressUpdate{
+					ID:       filePath,
+					Filename: filepath.Base(filePath),
+					Status:   StatusDone,
+					Progress: 1.0,
+					MediaKey: mediaKey,
+				}
+			}
+
+			// Update progress bar
 			if bar != nil {
 				bar.Add(1)
 			}
@@ -136,6 +174,16 @@ func (c *Client) uploadFile(filePath string, opts *UploadOptions, uploadOpts *up
 		}
 	}
 
+	// Send uploading status
+	if uploadOpts.progressChan != nil {
+		uploadOpts.progressChan <- ProgressUpdate{
+			ID:       filePath,
+			Filename: fileName,
+			Status:   StatusUploading,
+			Progress: 0.3,
+		}
+	}
+
 	// Get upload token
 	uploadToken, err := c.api.GetUploadToken(hashB64, int(fileSize))
 	if err != nil {
@@ -153,6 +201,16 @@ func (c *Client) uploadFile(filePath string, opts *UploadOptions, uploadOpts *up
 	uploadResp, err := c.api.UploadFile(file, uploadToken)
 	if err != nil {
 		return "", fmt.Errorf("failed to upload file: %w", err)
+	}
+
+	// Send committing status
+	if uploadOpts.progressChan != nil {
+		uploadOpts.progressChan <- ProgressUpdate{
+			ID:       filePath,
+			Filename: fileName,
+			Status:   StatusCommitting,
+			Progress: 0.8,
+		}
 	}
 
 	// Determine quality
