@@ -21,7 +21,10 @@ A high-performance Google Photos client written in Go, based on reverse-engineer
 
 ## Installation
 
-### Prerequisites
+### Pre-built Binaries
+Download the latest pre-built binaries for your platform (Windows, Linux, macOS) from the [GitHub Releases](https://github.com/agusibrahim/gpmc-go/releases) page.
+
+### Prerequisites (if building from source)
 - Go 1.25 or later
 - Google Photos auth_data (captured from mobile app requests)
 
