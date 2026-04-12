@@ -7,7 +7,7 @@ import (
 	"sync"
 
 	"github.com/schollz/progressbar/v3"
-	"github.com/xob0t/gpmc-go/internal/hash"
+	"github.com/agusibrahim/gpmc-go/internal/hash"
 )
 
 // UploadResult maps file paths to their media keys

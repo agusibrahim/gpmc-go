@@ -6,9 +6,9 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/cobra"
-	"github.com/xob0t/gpmc-go/internal/client"
-	"github.com/xob0t/gpmc-go/internal/config"
-	"github.com/xob0t/gpmc-go/internal/web"
+	"github.com/agusibrahim/gpmc-go/internal/client"
+	"github.com/agusibrahim/gpmc-go/internal/config"
+	"github.com/agusibrahim/gpmc-go/internal/web"
 )
 
 var (

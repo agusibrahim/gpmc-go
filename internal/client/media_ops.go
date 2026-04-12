@@ -3,8 +3,8 @@ package client
 import (
 	"fmt"
 
-	"github.com/xob0t/gpmc-go/internal/hash"
-	"github.com/xob0t/gpmc-go/internal/util"
+	"github.com/agusibrahim/gpmc-go/internal/hash"
+	"github.com/agusibrahim/gpmc-go/internal/util"
 )
 
 // MoveToTrash moves remote media files to trash

@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/schollz/progressbar/v3"
-	"github.com/xob0t/gpmc-go/internal/db"
-	"github.com/xob0t/gpmc-go/internal/parser"
+	"github.com/agusibrahim/gpmc-go/internal/db"
+	"github.com/agusibrahim/gpmc-go/internal/parser"
 )
 
 // UpdateCache incrementally updates the local library cache
