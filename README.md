@@ -1,15 +1,14 @@
 # GPMC-Go - Google Photos Mobile Client
 
 [![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go)](https://go.dev/)
-[![License](https://img.shields.io/github/license/xob0t/gpmc-go)](LICENSE)
+[![License](https://img.shields.io/github/license/agusibrahim/gpmc-go)](LICENSE)
 
-A high-performance Google Photos client written in Go, based on reverse-engineered mobile API.
+A high-performance Google Photos client written in Go, based on reverse-engineered mobile API. This is a Go implementation of the original [google_photos_mobile_client](https://github.com/xob0t/google_photos_mobile_client) project.
 
 ## Features
 
 | Feature | Description |
 |---------|-------------|
-| **Unlimited Original Quality** | Leverage mobile API signatures to upload in original quality without storage quota |
 | **Smart Deduplication** | SHA-1 hash-based detection prevents duplicate uploads |
 | **Concurrent Uploads** | Multi-threaded upload system with configurable worker pools |
 | **Album Management** | Create albums, add media, AUTO mode for directory-based naming |
@@ -29,7 +28,7 @@ A high-performance Google Photos client written in Go, based on reverse-engineer
 ### From Source
 
 ```bash
-git clone https://github.com/xob0t/gpmc-go.git
+git clone https://github.com/agusibrahim/gpmc-go.git
 cd gpmc-go
 go build -o gpmc ./cmd/gpmc
 ```
@@ -260,10 +259,6 @@ modernc.org/sqlite            # Pure-Go SQLite (no CGo)
 github.com/schollz/progressbar/v3  # Progress bars
 gopkg.in/yaml.v3              # YAML config
 ```
-
-## License
-
-MIT License - See [LICENSE](LICENSE) for details.
 
 ## Disclaimer
 
