@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/xob0t/gpmc-go/internal/proto"
-	"github.com/xob0t/gpmc-go/internal/proto/pb"
+	"github.com/agusibrahim/gpmc-go/internal/proto"
+	"github.com/agusibrahim/gpmc-go/internal/proto/pb"
 	pbproto "google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/encoding/protowire"
 )

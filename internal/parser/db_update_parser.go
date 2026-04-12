@@ -4,8 +4,8 @@ import (
 	"encoding/base64"
 	"strings"
 
-	"github.com/xob0t/gpmc-go/internal/models"
-	"github.com/xob0t/gpmc-go/internal/util"
+	"github.com/agusibrahim/gpmc-go/internal/models"
+	"github.com/agusibrahim/gpmc-go/internal/util"
 )
 
 // ParseMediaItem parses a single media item from the raw decoded protobuf data

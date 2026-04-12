@@ -5,7 +5,7 @@ import (
 
 	_ "modernc.org/sqlite"
 
-	"github.com/xob0t/gpmc-go/internal/models"
+	"github.com/agusibrahim/gpmc-go/internal/models"
 )
 
 // Storage handles all database operations

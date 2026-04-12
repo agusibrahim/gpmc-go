@@ -1,6 +1,6 @@
 syntax = "proto2";
 package gpmc;
-option go_package = "github.com/xob0t/gpmc-go/internal/proto/pb";
+option go_package = "github.com/agusibrahim/gpmc-go/internal/proto/pb";
 
 message CommitUploadMessage {
   message Field1 {

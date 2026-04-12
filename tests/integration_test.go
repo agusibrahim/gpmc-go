@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/xob0t/gpmc-go/internal/client"
-	"github.com/xob0t/gpmc-go/internal/util"
+	"github.com/agusibrahim/gpmc-go/internal/client"
+	"github.com/agusibrahim/gpmc-go/internal/util"
 )
 
 var authData = os.Getenv("GP_AUTH_DATA")

@@ -6,8 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/xob0t/gpmc-go/internal/api"
-	"github.com/xob0t/gpmc-go/internal/util"
+	"github.com/agusibrahim/gpmc-go/internal/api"
+	"github.com/agusibrahim/gpmc-go/internal/util"
 )
 
 // Client represents the Google Photos client

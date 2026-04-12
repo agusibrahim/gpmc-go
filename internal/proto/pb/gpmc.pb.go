@@ -59128,7 +59128,7 @@ const file_internal_proto_gpmc_proto_rawDesc = "" +
 	"\x03f_2\x18\x02 \x01(\v2+.gpmc.RestoreFromTrashMessage.Field9.Field2R\x02f2\x1a*\n" +
 	"\x06Field2\x12\x0f\n" +
 	"\x03f_1\x18\x01 \x01(\x03R\x02f1\x12\x0f\n" +
-	"\x03f_2\x18\x02 \x01(\tR\x02f2B,Z*github.com/xob0t/gpmc-go/internal/proto/pb"
+	"\x03f_2\x18\x02 \x01(\tR\x02f2B,Z*github.com/agusibrahim/gpmc-go/internal/proto/pb"
 
 var (
 	file_internal_proto_gpmc_proto_rawDescOnce sync.Once

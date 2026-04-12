@@ -1,4 +1,4 @@
-module github.com/xob0t/gpmc-go
+module github.com/agusibrahim/gpmc-go
 
 go 1.25.0
 

@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/xob0t/gpmc-go/internal/client"
+	"github.com/agusibrahim/gpmc-go/internal/client"
 )
 
 //go:embed index.html
