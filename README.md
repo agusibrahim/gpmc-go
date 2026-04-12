@@ -208,15 +208,11 @@ gpmc-go/
 ## Testing
 
 ```bash
-# Run all tests
+# Run unit tests
 go test ./...
 
-# Run integration tests (requires auth_data)
+# Run integration tests (requires GP_AUTH_DATA environment variable)
 go test ./tests/ -v
-
-# Run all test suites
-cd tests
-./run_all_tests.sh
 ```
 
 ## Database Schema
