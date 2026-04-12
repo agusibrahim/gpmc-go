@@ -1,4 +1,23 @@
-protoc-29.3-osx-aarch_64.zip
-protoc3
+# Binaries
 gpmc
 main
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Sensitive / Config
+.env
+config.yaml
+auth_data.txt
+*.db
+*.db-journal
+*.sqlite
+
+# Temporary / OS
+.DS_Store
+*.log
+*.tmp
+protoc-29.3-osx-aarch_64.zip
+protoc3/
