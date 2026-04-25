@@ -153,6 +153,8 @@
         // Batch tracking
         let batchTotal = 0;
         let batchCompleted = 0;
+        let batchBytesTotal = 0;
+        let batchBytesSent = 0;
         let isSaver = false;
         const activeUploads = new Map();
 
@@ -196,34 +198,49 @@
 
         function handleUpdate(update) {
             if (update.status === 'BatchMeta') {
-                initBatch(update.total_files);
+                initBatch(update.total_files, update.batch_bytes_total || 0, update.batch_bytes_sent || 0);
                 return;
+            }
+
+            if (update.batch_bytes_total) {
+                batchBytesTotal = update.batch_bytes_total;
+                batchBytesSent = update.batch_bytes_sent || batchBytesSent;
             }
 
             let card = activeUploads.get(update.id);
             if (!card) card = createFileCard(update);
-            
+
             const pBar = card.querySelector('.p-bar');
             const statusText = card.querySelector('.status-text');
-            pBar.style.width = `${update.progress * 100}%`;
+            const byteText = card.querySelector('.byte-text');
+            const percent = update.bytes_total ? (update.bytes_sent / update.bytes_total) * 100 : update.progress * 100;
+            pBar.style.width = `${Math.min(100, percent)}%`;
             statusText.textContent = update.status;
-            
-            if (update.status === 'Done') {
-                batchCompleted++;
+            if (byteText && update.bytes_total) byteText.textContent = `${formatBytes(update.bytes_sent)} / ${formatBytes(update.bytes_total)}`;
+
+            if (['Done', 'Skipped', 'Error'].includes(update.status)) {
+                if (!card.dataset.terminal) {
+                    batchCompleted++;
+                    card.dataset.terminal = 'true';
+                }
                 updateGlobalProgress();
                 card.classList.add('opacity-60');
+            }
+            if (update.status === 'Done' || update.status === 'Skipped') {
                 statusText.classList.add('text-emerald-500');
                 pBar.classList.add('bg-emerald-500');
             } else if (update.status === 'Error') {
                 card.classList.add('border-red-500/50');
                 statusText.classList.add('text-red-500');
-                statusText.textContent = update.error;
+                statusText.textContent = update.error || 'Error';
             }
         }
 
-        function initBatch(total) {
+        function initBatch(total, bytesTotal, bytesSent) {
             batchTotal = total;
             batchCompleted = 0;
+            batchBytesTotal = bytesTotal;
+            batchBytesSent = bytesSent;
             document.getElementById('global-progress-container').classList.remove('hidden');
             document.getElementById('queue-header').classList.remove('hidden');
             document.getElementById('batch-total').textContent = total;
@@ -231,7 +248,7 @@
         }
 
         function updateGlobalProgress() {
-            const percent = batchTotal > 0 ? Math.round((batchCompleted / batchTotal) * 100) : 0;
+            const percent = batchBytesTotal > 0 ? Math.round((batchBytesSent / batchBytesTotal) * 100) : (batchTotal > 0 ? Math.round((batchCompleted / batchTotal) * 100) : 0);
             document.getElementById('batch-completed').textContent = batchCompleted;
             document.getElementById('batch-percent').textContent = `${percent}%`;
             document.getElementById('batch-progress-bar').style.width = `${percent}%`;
@@ -243,6 +260,13 @@
             }
         }
 
+        function formatBytes(bytes) {
+            if (!bytes) return '0 B';
+            const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+            const idx = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+            return `${(bytes / Math.pow(1024, idx)).toFixed(idx === 0 ? 0 : 1)} ${units[idx]}`;
+        }
+
         function createFileCard(update) {
             const div = document.createElement('div');
             div.className = 'glass p-5 rounded-2xl flex items-center gap-5 animate-in fade-in slide-in-from-bottom-2 duration-300 transition-all';
@@ -252,14 +276,16 @@
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm font-bold truncate max-w-[80%]">${update.filename}</span>
+                        <span class="filename-text text-sm font-bold truncate max-w-[80%]"></span>
                         <span class="status-text text-[10px] font-black uppercase tracking-widest text-muted-foreground"></span>
                     </div>
+                    <div class="byte-text text-[10px] text-muted-foreground mb-1"></div>
                     <div class="h-1 w-full bg-muted rounded-full overflow-hidden">
                         <div class="p-bar h-full bg-accent transition-all duration-300 w-0"></div>
                     </div>
                 </div>
             `;
+            div.querySelector('.filename-text').textContent = update.filename || '';
             uploadList.prepend(div);
             activeUploads.set(update.id, div);
             return div;

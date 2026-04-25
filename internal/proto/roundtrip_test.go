@@ -61,11 +61,11 @@ func TestRoundtripSetCaption(t *testing.T) {
 func TestEncodeEmptyMap(t *testing.T) {
 	original := map[string]interface{}{}
 
-	// Encode - should not panic
+	// Encode - should not panic; an empty top-level message encodes to zero bytes.
 	encoded := EncodeMessage(original, GetUploadTokenDef)
 
-	if len(encoded) == 0 {
-		t.Error("Encoded data should not be empty")
+	if len(encoded) != 0 {
+		t.Errorf("EncodeMessage(empty) length = %d; want 0", len(encoded))
 	}
 }
 

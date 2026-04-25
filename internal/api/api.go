@@ -12,14 +12,15 @@ import (
 
 const (
 	// API constants
-	DefaultTimeout           = 60
-	Retries                  = 10
-	AndroidAPIVersion        = 28
-	ClientVersionCode        = 49029607
-	DefaultModel             = "Pixel XL"
-	DefaultMake              = "Google"
-	DefaultLanguage          = "en_US"
-	BackoffFactor            = 1
+	DefaultTimeout       = 60
+	DefaultUploadTimeout = 1800
+	Retries              = 10
+	AndroidAPIVersion    = 28
+	ClientVersionCode    = 49029607
+	DefaultModel         = "Pixel XL"
+	DefaultMake          = "Google"
+	DefaultLanguage      = "en_US"
+	BackoffFactor        = 1
 )
 
 // Api handles communication with the Google Photos mobile API
@@ -28,7 +29,8 @@ type Api struct {
 	proxy             string
 	language          string
 	timeout           int
-	androidAPIVersion  int
+	uploadTimeout     int
+	androidAPIVersion int
 	model             string
 	make              string
 	clientVersionCode int
@@ -53,7 +55,8 @@ func New(authData string, opts ...Option) (*Api, error) {
 		proxy:             "",
 		language:          DefaultLanguage,
 		timeout:           DefaultTimeout,
-		androidAPIVersion:  AndroidAPIVersion,
+		uploadTimeout:     DefaultUploadTimeout,
+		androidAPIVersion: AndroidAPIVersion,
 		model:             DefaultModel,
 		make:              DefaultMake,
 		clientVersionCode: ClientVersionCode,
@@ -96,7 +99,18 @@ func WithLanguage(language string) Option {
 // WithTimeout sets the request timeout in seconds
 func WithTimeout(timeout int) Option {
 	return func(a *Api) {
-		a.timeout = timeout
+		if timeout > 0 {
+			a.timeout = timeout
+		}
+	}
+}
+
+// WithUploadTimeout sets the timeout for large file upload requests.
+func WithUploadTimeout(timeout int) Option {
+	return func(a *Api) {
+		if timeout > 0 {
+			a.uploadTimeout = timeout
+		}
 	}
 }
 
@@ -138,11 +152,18 @@ func (a *Api) BearerToken() (string, error) {
 
 // newSession creates a new HTTP client with retry mechanism
 func (a *Api) newSession() *http.Client {
+	return a.newSessionWithTimeout(a.timeout)
+}
+
+func (a *Api) newUploadSession() *http.Client {
+	return a.newSessionWithTimeout(a.uploadTimeout)
+}
+
+func (a *Api) newSessionWithTimeout(timeout int) *http.Client {
 	client := &http.Client{
-		Timeout: time.Duration(a.timeout) * time.Second,
+		Timeout: time.Duration(timeout) * time.Second,
 	}
 
-	// Configure proxy if set
 	if a.proxy != "" {
 		proxyURL, err := url.Parse(a.proxy)
 		if err == nil {
@@ -168,19 +189,19 @@ func (a *Api) getAuthToken() (token string, expiry int64, err error) {
 
 	// Build auth request body (manual construction to avoid encryption)
 	authData := map[string]string{
-		"androidId":                authValues.Get("androidId"),
-		"app":                      "com.google.android.apps.photos",
-		"client_sig":               authValues.Get("client_sig"),
-		"callerPkg":                "com.google.android.apps.photos",
-		"callerSig":                authValues.Get("callerSig"),
-		"device_country":           authValues.Get("device_country"),
-		"Email":                    authValues.Get("Email"),
+		"androidId":                    authValues.Get("androidId"),
+		"app":                          "com.google.android.apps.photos",
+		"client_sig":                   authValues.Get("client_sig"),
+		"callerPkg":                    "com.google.android.apps.photos",
+		"callerSig":                    authValues.Get("callerSig"),
+		"device_country":               authValues.Get("device_country"),
+		"Email":                        authValues.Get("Email"),
 		"google_play_services_version": authValues.Get("google_play_services_version"),
-		"lang":                     authValues.Get("lang"),
-		"oauth2_foreground":        authValues.Get("oauth2_foreground"),
-		"sdk_version":              authValues.Get("sdk_version"),
-		"service":                  authValues.Get("service"),
-		"Token":                    authValues.Get("Token"),
+		"lang":                         authValues.Get("lang"),
+		"oauth2_foreground":            authValues.Get("oauth2_foreground"),
+		"sdk_version":                  authValues.Get("sdk_version"),
+		"service":                      authValues.Get("service"),
+		"Token":                        authValues.Get("Token"),
 	}
 
 	// Build form data
@@ -298,13 +319,6 @@ func (t *retryTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 		resp, err = t.base.RoundTrip(req)
 		if err != nil {
 			return nil, err
-		}
-
-		// Retry on 502, 503, 504
-		if resp.StatusCode == 502 || resp.StatusCode == 503 || resp.StatusCode == 504 {
-			resp.Body.Close()
-			time.Sleep(time.Duration(BackoffFactor*(i+1)) * time.Second)
-			continue
 		}
 
 		return resp, nil

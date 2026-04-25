@@ -1,6 +1,6 @@
 # Binaries
-gpmc
-main
+/gpmc
+/main
 *.exe
 *.exe~
 *.dll
@@ -11,6 +11,7 @@ main
 .env
 config.yaml
 auth_data.txt
+.webui_secret_key
 *.db
 *.db-journal
 *.sqlite

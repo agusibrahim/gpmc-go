@@ -10,20 +10,22 @@ import (
 
 // Config represents the application configuration
 type Config struct {
-	AuthData string `yaml:"auth_data"`
-	Proxy    string `yaml:"proxy"`
-	Language string `yaml:"language"`
-	Timeout  int    `yaml:"timeout"`
-	LogLevel string `yaml:"log_level"`
-	Threads  int    `yaml:"threads"`
+	AuthData      string `yaml:"auth_data"`
+	Proxy         string `yaml:"proxy"`
+	Language      string `yaml:"language"`
+	Timeout       int    `yaml:"timeout"`
+	UploadTimeout int    `yaml:"upload_timeout"`
+	LogLevel      string `yaml:"log_level"`
+	Threads       int    `yaml:"threads"`
 }
 
 // DefaultConfig returns a config with default values
 func DefaultConfig() *Config {
 	return &Config{
-		Timeout:  60,
-		LogLevel: "INFO",
-		Threads:  1,
+		Timeout:       60,
+		UploadTimeout: 1800,
+		LogLevel:      "INFO",
+		Threads:       1,
 	}
 }
 
@@ -59,7 +61,7 @@ func (c *Config) Save(configPath string) error {
 	}
 
 	// Write file
-	if err := os.WriteFile(configPath, data, 0644); err != nil {
+	if err := os.WriteFile(configPath, data, 0600); err != nil {
 		return fmt.Errorf("failed to write config file: %w", err)
 	}
 
@@ -108,6 +110,9 @@ func (c *Config) MergeWithDefaults() *Config {
 	if c.Timeout > 0 {
 		config.Timeout = c.Timeout
 	}
+	if c.UploadTimeout > 0 {
+		config.UploadTimeout = c.UploadTimeout
+	}
 	if c.LogLevel != "" {
 		config.LogLevel = c.LogLevel
 	}
@@ -118,6 +123,9 @@ func (c *Config) MergeWithDefaults() *Config {
 	// Apply environment variables
 	if envAuthData := os.Getenv("GP_AUTH_DATA"); envAuthData != "" {
 		config.AuthData = envAuthData
+	}
+	if envProxy := os.Getenv("GP_PROXY"); envProxy != "" {
+		config.Proxy = envProxy
 	}
 
 	return config
@@ -133,6 +141,10 @@ func (c *Config) Validate() error {
 	// Validate other fields
 	if c.Timeout < 0 {
 		return fmt.Errorf("timeout must be positive")
+	}
+
+	if c.UploadTimeout < 0 {
+		return fmt.Errorf("upload_timeout must be positive")
 	}
 
 	if c.Threads < 0 {

@@ -78,8 +78,8 @@ func TestParseLanguage(t *testing.T) {
 // TestInt64ToFloat tests int64 to float64 conversion
 func TestInt64ToFloat(t *testing.T) {
 	// Test a known value
-	// IEEE 754 double representation of 123.456 is approximately 4638234784954079488 in int64
-	testValue := int64(4638234784954079488)
+	// IEEE 754 double representation of 123.456
+	testValue := int64(4638387860618067575)
 	result := Int64ToFloat(testValue)
 	expected := 123.456
 
@@ -92,7 +92,7 @@ func TestInt64ToFloat(t *testing.T) {
 // TestInt32ToFloat tests int32 to float32 conversion
 func TestInt32ToFloat(t *testing.T) {
 	// Test a known value
-	testValue := int32(1094713344) // IEEE 754 single representation of 12.34
+	testValue := int32(1095069860) // IEEE 754 single representation of 12.34
 	result := Int32ToFloat(testValue)
 	expected := float32(12.34)
 
@@ -178,10 +178,10 @@ func TestSafeBytes(t *testing.T) {
 // TestParseInt tests integer parsing with default
 func TestParseInt(t *testing.T) {
 	tests := []struct {
-		name      string
-		input     string
+		name       string
+		input      string
 		defaultVal int
-		expected  int
+		expected   int
 	}{
 		{"Valid number", "42", 0, 42},
 		{"Invalid", "abc", 10, 10},

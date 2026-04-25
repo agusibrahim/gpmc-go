@@ -1,38 +1,44 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 
-	"github.com/spf13/cobra"
 	"github.com/agusibrahim/gpmc-go/internal/client"
 	"github.com/agusibrahim/gpmc-go/internal/config"
 	"github.com/agusibrahim/gpmc-go/internal/web"
+	"github.com/spf13/cobra"
 )
 
 var (
 	// CLI flags
-	flagAuthData     string
-	flagAlbum        string
-	flagProxy        string
-	flagProgress     bool
-	flagRecursive    bool
-	flagThreads      int
-	flagForceUpload  bool
+	flagAuthData       string
+	flagAlbum          string
+	flagProxy          string
+	flagProgress       bool
+	flagRecursive      bool
+	flagThreads        int
+	flagForceUpload    bool
 	flagDeleteFromHost bool
-	flagUseQuota     bool
-	flagSaver        bool
-	flagTimeout      int
-	flagLogLevel     string
-	flagFilter       string
-	flagExclude      bool
-	flagRegex        bool
-	flagIgnoreCase   bool
-	flagMatchPath    bool
-	flagConfig       string
-	flagInitConfig   bool
-	flagPort         int
+	flagUseQuota       bool
+	flagSaver          bool
+	flagTimeout        int
+	flagUploadTimeout  int
+	flagLogLevel       string
+	flagFilter         string
+	flagExclude        bool
+	flagRegex          bool
+	flagIgnoreCase     bool
+	flagMatchPath      bool
+	flagConfig         string
+	flagInitConfig     bool
+	flagPort           int
+	flagResume         bool
+	flagManifestPath   string
+	flagOutput         string
+	flagVerify         bool
 )
 
 var rootCmd = &cobra.Command{
@@ -90,6 +96,7 @@ func init() {
 	rootCmd.Flags().BoolVar(&flagUseQuota, "use-quota", false, "Count uploads against storage quota")
 	rootCmd.Flags().BoolVar(&flagSaver, "saver", false, "Upload in storage saver quality")
 	rootCmd.Flags().IntVar(&flagTimeout, "timeout", 60, "Request timeout in seconds")
+	rootCmd.Flags().IntVar(&flagUploadTimeout, "upload-timeout", 1800, "File upload timeout in seconds")
 	rootCmd.Flags().StringVar(&flagLogLevel, "log-level", "INFO", "Log level (DEBUG|INFO|WARNING|ERROR|CRITICAL)")
 	rootCmd.Flags().StringVar(&flagFilter, "filter", "", "Filter expression for file selection")
 	rootCmd.Flags().BoolVar(&flagExclude, "exclude", false, "Exclude files matching filter")
@@ -97,6 +104,10 @@ func init() {
 	rootCmd.Flags().BoolVar(&flagIgnoreCase, "ignore-case", false, "Case-insensitive filtering")
 	rootCmd.Flags().BoolVar(&flagMatchPath, "match-path", false, "Match against full path instead of filename")
 	rootCmd.Flags().StringVar(&flagConfig, "config", "", "Config file path (default: ~/.gpmc/config.yaml)")
+	rootCmd.Flags().BoolVar(&flagResume, "resume", false, "Resume from a local upload manifest")
+	rootCmd.Flags().StringVar(&flagManifestPath, "manifest-path", "", "Path to local upload manifest JSON")
+	rootCmd.Flags().StringVar(&flagOutput, "output", "text", "Output format (text|json)")
+	rootCmd.Flags().BoolVar(&flagVerify, "verify", false, "Verify uploaded media via hash lookup after commit")
 
 	// Update cache flags
 	updateCacheCmd.Flags().BoolVar(&flagProgress, "progress", true, "Display cache update progress")
@@ -118,26 +129,32 @@ func runUpload(cmd *cobra.Command, args []string) error {
 	}
 
 	// Load config
-	cfg, err := loadConfig()
+	cfg, err := loadConfig(cmd)
 	if err != nil {
 		return fmt.Errorf("failed to load config: %w", err)
 	}
 
 	// Create client
 	c, err := client.New(cfg.AuthData,
-		client.WithTimeout(flagTimeout),
+		client.WithTimeout(cfg.Timeout),
+		client.WithUploadTimeout(cfg.UploadTimeout),
 		client.WithLanguage(cfg.Language),
+		client.WithProxy(cfg.Proxy),
 	)
 	if err != nil {
 		return fmt.Errorf("failed to create client: %w", err)
 	}
 
+	if flagOutput != "text" && flagOutput != "json" {
+		return fmt.Errorf("output must be text or json")
+	}
+
 	// Build upload options
 	uploadOpts := []client.UploadOption{
 		client.WithAlbum(flagAlbum),
-		client.WithProgress(flagProgress),
+		client.WithProgress(flagProgress && flagOutput == "text"),
 		client.WithRecursive(flagRecursive),
-		client.WithThreads(flagThreads),
+		client.WithThreads(cfg.Threads),
 		client.WithForceUpload(flagForceUpload),
 		client.WithDeleteFromHost(flagDeleteFromHost),
 		client.WithUseQuota(flagUseQuota),
@@ -147,6 +164,9 @@ func runUpload(cmd *cobra.Command, args []string) error {
 		client.WithFilterRegex(flagRegex),
 		client.WithFilterIgnoreCase(flagIgnoreCase),
 		client.WithFilterMatchPath(flagMatchPath),
+		client.WithResume(flagResume),
+		client.WithManifestPath(flagManifestPath),
+		client.WithVerify(flagVerify),
 	}
 
 	// Handle multiple paths or single path
@@ -156,14 +176,21 @@ func runUpload(cmd *cobra.Command, args []string) error {
 	}
 
 	// Upload
-	results, err := c.Upload(target, uploadOpts...)
+	batch, err := c.UploadBatch(target, uploadOpts...)
+	if flagOutput == "json" {
+		if encodeErr := json.NewEncoder(os.Stdout).Encode(batch); encodeErr != nil {
+			return encodeErr
+		}
+	} else if batch != nil {
+		for _, file := range batch.Files {
+			if file.MediaKey != "" && file.Status != client.StatusError {
+				fmt.Printf("%s -> %s\n", filepath.Base(file.Path), file.MediaKey)
+			}
+		}
+		fmt.Fprintf(os.Stderr, "Summary: total=%d uploaded=%d skipped=%d failed=%d bytes=%d duration=%s\n", batch.Summary.TotalFiles, batch.Summary.Uploaded, batch.Summary.Skipped, batch.Summary.Failed, batch.Summary.TotalBytes, batch.Summary.Duration)
+	}
 	if err != nil {
 		return fmt.Errorf("upload failed: %w", err)
-	}
-
-	// Print results
-	for path, mediaKey := range results {
-		fmt.Printf("%s -> %s\n", filepath.Base(path), mediaKey)
 	}
 
 	return nil
@@ -171,14 +198,15 @@ func runUpload(cmd *cobra.Command, args []string) error {
 
 func runUpdateCache(cmd *cobra.Command, args []string) error {
 	// Load config
-	cfg, err := loadConfig()
+	cfg, err := loadConfig(cmd)
 	if err != nil {
 		return fmt.Errorf("failed to load config: %w", err)
 	}
 
 	// Create client
 	c, err := client.New(cfg.AuthData,
-		client.WithTimeout(flagTimeout),
+		client.WithTimeout(cfg.Timeout),
+		client.WithProxy(cfg.Proxy),
 	)
 	if err != nil {
 		return fmt.Errorf("failed to create client: %w", err)
@@ -194,15 +222,17 @@ func runUpdateCache(cmd *cobra.Command, args []string) error {
 
 func runServe(cmd *cobra.Command, args []string) error {
 	// Load config
-	cfg, err := loadConfig()
+	cfg, err := loadConfig(cmd)
 	if err != nil {
 		return fmt.Errorf("failed to load config: %w", err)
 	}
 
 	// Create client
 	c, err := client.New(cfg.AuthData,
-		client.WithTimeout(flagTimeout),
+		client.WithTimeout(cfg.Timeout),
+		client.WithUploadTimeout(cfg.UploadTimeout),
 		client.WithLanguage(cfg.Language),
+		client.WithProxy(cfg.Proxy),
 	)
 	if err != nil {
 		return fmt.Errorf("failed to create client: %w", err)
@@ -228,7 +258,7 @@ func runInitConfig(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func loadConfig() (*config.Config, error) {
+func loadConfig(cmd *cobra.Command) (*config.Config, error) {
 	configPath := flagConfig
 	if configPath == "" {
 		configPath = config.GetDefaultConfigPath()
@@ -246,10 +276,13 @@ func loadConfig() (*config.Config, error) {
 	if flagProxy != "" {
 		cfg.Proxy = flagProxy
 	}
-	if flagTimeout != 60 {
+	if cmd.Flags().Changed("timeout") {
 		cfg.Timeout = flagTimeout
 	}
-	if flagThreads != 1 {
+	if cmd.Flags().Changed("upload-timeout") {
+		cfg.UploadTimeout = flagUploadTimeout
+	}
+	if cmd.Flags().Changed("threads") {
 		cfg.Threads = flagThreads
 	}
 

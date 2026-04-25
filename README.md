@@ -60,6 +60,9 @@ language: "en-US"
 # Request timeout in seconds (default: 60)
 timeout: 60
 
+# File upload timeout in seconds (default: 1800)
+upload_timeout: 1800
+
 # Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL (default: INFO)
 log_level: "INFO"
 
@@ -144,6 +147,7 @@ threads: 1
 | `--use-quota` | Count against storage quota | false |
 | `--saver` | Upload in storage saver quality | false |
 | `--timeout` | Request timeout (seconds) | 60 |
+| `--upload-timeout` | File upload timeout (seconds) | 1800 |
 | `--log-level` | DEBUG|INFO|WARNING|ERROR|CRITICAL | INFO |
 | `--filter` | Filter expression for file selection | "" |
 | `--exclude` | Exclude files matching filter | false |
@@ -151,6 +155,10 @@ threads: 1
 | `--ignore-case` | Case-insensitive filtering | false |
 | `--match-path` | Match against full path instead of filename | false |
 | `--config` | Config file path | ~/.gpmc/config.yaml |
+| `--resume` | Resume completed files from local manifest | false |
+| `--manifest-path` | Local upload manifest JSON path | "" |
+| `--output` | Output format (`text` or `json`) | text |
+| `--verify` | Verify uploaded media via hash lookup after commit | false |
 
 ## Architecture
 

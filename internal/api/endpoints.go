@@ -12,8 +12,8 @@ import (
 
 	"github.com/agusibrahim/gpmc-go/internal/proto"
 	"github.com/agusibrahim/gpmc-go/internal/proto/pb"
-	pbproto "google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/encoding/protowire"
+	pbproto "google.golang.org/protobuf/proto"
 )
 
 // GetUploadToken obtains an upload token for a file
@@ -34,12 +34,12 @@ func (a *Api) GetUploadToken(shaHashB64 string, fileSize int) (string, error) {
 	}
 
 	headers := map[string]string{
-		"Accept-Encoding":    "gzip",
-		"Accept-Language":    a.language,
-		"Content-Type":       "application/x-protobuf",
-		"User-Agent":         a.userAgent,
-		"Authorization":      "Bearer " + token,
-		"X-Goog-Hash":        "sha1=" + shaHashB64,
+		"Accept-Encoding":         "gzip",
+		"Accept-Language":         a.language,
+		"Content-Type":            "application/x-protobuf",
+		"User-Agent":              a.userAgent,
+		"Authorization":           "Bearer " + token,
+		"X-Goog-Hash":             "sha1=" + shaHashB64,
 		"X-Upload-Content-Length": strconv.Itoa(fileSize),
 	}
 
@@ -50,7 +50,7 @@ func (a *Api) GetUploadToken(shaHashB64 string, fileSize int) (string, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("upload token request failed with status %d", resp.StatusCode)
+		return "", responseError("upload token request", resp)
 	}
 
 	return resp.Header.Get("X-GUploader-UploadID"), nil
@@ -91,7 +91,7 @@ func (a *Api) FindRemoteMediaByHash(sha1Hash []byte) (string, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("find by hash request failed with status %d", resp.StatusCode)
+		return "", responseError("find by hash request", resp)
 	}
 
 	body, _ := io.ReadAll(resp.Body)
@@ -100,7 +100,9 @@ func (a *Api) FindRemoteMediaByHash(sha1Hash []byte) (string, error) {
 	b := body
 	for len(b) > 0 {
 		num, typ, n := protowire.ConsumeTag(b)
-		if n < 0 { break }
+		if n < 0 {
+			break
+		}
 		b = b[n:]
 		if num == 1 && typ == protowire.BytesType {
 			v1, n2 := protowire.ConsumeBytes(b)
@@ -108,7 +110,9 @@ func (a *Api) FindRemoteMediaByHash(sha1Hash []byte) (string, error) {
 				v1b := v1
 				for len(v1b) > 0 {
 					num2, typ2, n3 := protowire.ConsumeTag(v1b)
-					if n3 < 0 { break }
+					if n3 < 0 {
+						break
+					}
 					v1b = v1b[n3:]
 					if num2 == 2 && typ2 == protowire.BytesType {
 						v2, n4 := protowire.ConsumeBytes(v1b)
@@ -116,7 +120,9 @@ func (a *Api) FindRemoteMediaByHash(sha1Hash []byte) (string, error) {
 							v2b := v2
 							for len(v2b) > 0 {
 								num3, typ3, n5 := protowire.ConsumeTag(v2b)
-								if n5 < 0 { break }
+								if n5 < 0 {
+									break
+								}
 								v2b = v2b[n5:]
 								if num3 == 2 && typ3 == protowire.BytesType {
 									v3, n6 := protowire.ConsumeBytes(v2b)
@@ -124,7 +130,9 @@ func (a *Api) FindRemoteMediaByHash(sha1Hash []byte) (string, error) {
 										v3b := v3
 										for len(v3b) > 0 {
 											num4, typ4, n7 := protowire.ConsumeTag(v3b)
-											if n7 < 0 { break }
+											if n7 < 0 {
+												break
+											}
 											v3b = v3b[n7:]
 											if num4 == 1 && typ4 == protowire.BytesType {
 												v4, n8 := protowire.ConsumeBytes(v3b)
@@ -133,25 +141,33 @@ func (a *Api) FindRemoteMediaByHash(sha1Hash []byte) (string, error) {
 												}
 											}
 											nskip := protowire.ConsumeFieldValue(num4, typ4, v3b)
-											if nskip < 0 { break }
+											if nskip < 0 {
+												break
+											}
 											v3b = v3b[nskip:]
 										}
 									}
 								}
 								nskip := protowire.ConsumeFieldValue(num3, typ3, v2b)
-								if nskip < 0 { break }
+								if nskip < 0 {
+									break
+								}
 								v2b = v2b[nskip:]
 							}
 						}
 					}
 					nskip := protowire.ConsumeFieldValue(num2, typ2, v1b)
-					if nskip < 0 { break }
+					if nskip < 0 {
+						break
+					}
 					v1b = v1b[nskip:]
 				}
 			}
 		}
 		nskip := protowire.ConsumeFieldValue(num, typ, b)
-		if nskip < 0 { break }
+		if nskip < 0 {
+			break
+		}
 		b = b[nskip:]
 	}
 
@@ -159,7 +175,7 @@ func (a *Api) FindRemoteMediaByHash(sha1Hash []byte) (string, error) {
 }
 
 // UploadFile uploads file data to Google Photos
-func (a *Api) UploadFile(file io.Reader, uploadToken string) (*pb.CommitUploadMessage_Field1_Field1, error) {
+func (a *Api) UploadFile(file io.Reader, uploadToken string, fileSize int64) (*pb.CommitUploadMessage_Field1_Field1, error) {
 	token, err := a.BearerToken()
 	if err != nil {
 		return nil, err
@@ -172,20 +188,14 @@ func (a *Api) UploadFile(file io.Reader, uploadToken string) (*pb.CommitUploadMe
 		"Authorization":   "Bearer " + token,
 	}
 
-	// Read file data
-	data, err := io.ReadAll(file)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := a.makeRequest("PUT", GetUploadURLWithToken(uploadToken), data, headers)
+	resp, err := a.makeUploadRequest("PUT", GetUploadURLWithToken(uploadToken), file, fileSize, headers)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("file upload failed with status %d", resp.StatusCode)
+		return nil, responseError("file upload", resp)
 	}
 
 	body, _ := io.ReadAll(resp.Body)
@@ -215,7 +225,7 @@ func (a *Api) CommitUpload(uploadResp *pb.CommitUploadMessage_Field1_Field1, fil
 				F_1: protoPoint(int64(uploadTimestamp)),
 				F_2: protoPoint(int64(46000000)),
 			},
-			F_7: protoPoint(qualityMap[quality]),
+			F_7:  protoPoint(qualityMap[quality]),
 			F_10: protoPoint(int64(1)),
 		},
 		F_2: &pb.CommitUploadMessage_Field2{
@@ -237,13 +247,13 @@ func (a *Api) CommitUpload(uploadResp *pb.CommitUploadMessage_Field1_Field1, fil
 	}
 
 	headers := map[string]string{
-		"Accept-Encoding":           "gzip",
-		"Accept-Language":           a.language,
-		"Content-Type":              "application/x-protobuf",
-		"User-Agent":                a.userAgent,
-		"Authorization":             "Bearer " + token,
-		"x-goog-ext-173412678-bin":  "CgcIAhClARgC",
-		"x-goog-ext-174067345-bin":  "CgIIAg==",
+		"Accept-Encoding":          "gzip",
+		"Accept-Language":          a.language,
+		"Content-Type":             "application/x-protobuf",
+		"User-Agent":               a.userAgent,
+		"Authorization":            "Bearer " + token,
+		"x-goog-ext-173412678-bin": "CgcIAhClARgC",
+		"x-goog-ext-174067345-bin": "CgIIAg==",
 	}
 
 	resp, err := a.makeRequest("POST", GetPhotosDataURL(EndpointCommitUpload), serializedData, headers)
@@ -253,11 +263,10 @@ func (a *Api) CommitUpload(uploadResp *pb.CommitUploadMessage_Field1_Field1, fil
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("commit upload failed with status %d", resp.StatusCode)
+		return "", responseError("commit upload", resp)
 	}
 
 	body, _ := io.ReadAll(resp.Body)
-	fmt.Printf("COMMIT_UPLOAD RESPONSE %d bytes: %x\n", len(body), body)
 	decodedMessage := &pb.CommitUploadMessage{}
 	if err := pbproto.Unmarshal(body, decodedMessage); err != nil {
 		return "", fmt.Errorf("upload rejected by API (unmarshal error): %w", err)
@@ -268,7 +277,9 @@ func (a *Api) CommitUpload(uploadResp *pb.CommitUploadMessage_Field1_Field1, fil
 		b := decodedMessage.F_1.F_3
 		for len(b) > 0 {
 			num, typ, n := protowire.ConsumeTag(b)
-			if n < 0 { break }
+			if n < 0 {
+				break
+			}
 			b = b[n:]
 			if num == 1 && typ == protowire.BytesType {
 				v, n2 := protowire.ConsumeBytes(b)
@@ -277,7 +288,9 @@ func (a *Api) CommitUpload(uploadResp *pb.CommitUploadMessage_Field1_Field1, fil
 				}
 			}
 			n3 := protowire.ConsumeFieldValue(num, typ, b)
-			if n3 < 0 { break }
+			if n3 < 0 {
+				break
+			}
 			b = b[n3:]
 		}
 	}
@@ -285,10 +298,9 @@ func (a *Api) CommitUpload(uploadResp *pb.CommitUploadMessage_Field1_Field1, fil
 	return "", fmt.Errorf("could not extract media key from response")
 }
 
-func protoPoint(i int64) *int64 { return &i }
+func protoPoint(i int64) *int64         { return &i }
 func protoPointString(s string) *string { return &s }
-func protoPointInt64(i int64) *int64 { return &i }
-
+func protoPointInt64(i int64) *int64    { return &i }
 
 // CreateAlbum creates a new album with the given media items
 func (a *Api) CreateAlbum(albumName string, mediaKeys []string) (string, error) {
@@ -349,12 +361,14 @@ func (a *Api) CreateAlbum(albumName string, mediaKeys []string) (string, error) 
 	}
 
 	body, _ := io.ReadAll(resp.Body)
-	
+
 	// Dynamically extract album media key [1][1]
 	b := body
 	for len(b) > 0 {
 		num, typ, n := protowire.ConsumeTag(b)
-		if n < 0 { break }
+		if n < 0 {
+			break
+		}
 		b = b[n:]
 		if num == 1 && typ == protowire.BytesType {
 			v1, n2 := protowire.ConsumeBytes(b)
@@ -362,7 +376,9 @@ func (a *Api) CreateAlbum(albumName string, mediaKeys []string) (string, error) 
 				v1b := v1
 				for len(v1b) > 0 {
 					num2, typ2, n3 := protowire.ConsumeTag(v1b)
-					if n3 < 0 { break }
+					if n3 < 0 {
+						break
+					}
 					v1b = v1b[n3:]
 					if num2 == 1 && typ2 == protowire.BytesType {
 						v2, n4 := protowire.ConsumeBytes(v1b)
@@ -371,13 +387,17 @@ func (a *Api) CreateAlbum(albumName string, mediaKeys []string) (string, error) 
 						}
 					}
 					nskip := protowire.ConsumeFieldValue(num2, typ2, v1b)
-					if nskip < 0 { break }
+					if nskip < 0 {
+						break
+					}
 					v1b = v1b[nskip:]
 				}
 			}
 		}
 		nskip := protowire.ConsumeFieldValue(num, typ, b)
-		if nskip < 0 { break }
+		if nskip < 0 {
+			break
+		}
 		b = b[nskip:]
 	}
 	return "", fmt.Errorf("album key not found in response")
@@ -875,12 +895,22 @@ func (a *Api) makeRequest(method, url string, data []byte, headers map[string]st
 		bodyReader = bytes.NewReader(data)
 	}
 
-	req, err := http.NewRequest(method, url, bodyReader)
+	return a.doRequest(a.newSession(), method, url, bodyReader, -1, headers)
+}
+
+func (a *Api) makeUploadRequest(method, url string, body io.Reader, contentLength int64, headers map[string]string) (*http.Response, error) {
+	return a.doRequest(a.newUploadSession(), method, url, body, contentLength, headers)
+}
+
+func (a *Api) doRequest(client *http.Client, method, url string, body io.Reader, contentLength int64, headers map[string]string) (*http.Response, error) {
+	req, err := http.NewRequest(method, url, body)
 	if err != nil {
 		return nil, err
 	}
+	if contentLength >= 0 {
+		req.ContentLength = contentLength
+	}
 
-	// Set headers
 	for k, v := range headers {
 		if strings.ToLower(k) == "accept-encoding" {
 			continue
@@ -888,9 +918,22 @@ func (a *Api) makeRequest(method, url string, data []byte, headers map[string]st
 		req.Header.Set(k, v)
 	}
 
-	// Make request
-	client := a.newSession()
 	return client.Do(req)
+}
+
+func responseError(operation string, resp *http.Response) error {
+	body, _ := io.ReadAll(io.LimitReader(resp.Body, 256))
+	message := strings.TrimSpace(string(body))
+	if message == "" || strings.Contains(strings.ToLower(resp.Header.Get("Content-Type")), "html") {
+		return fmt.Errorf("%s failed with status %d", operation, resp.StatusCode)
+	}
+	message = strings.Map(func(r rune) rune {
+		if r < 32 || r == 127 {
+			return ' '
+		}
+		return r
+	}, message)
+	return fmt.Errorf("%s failed with status %d: %s", operation, resp.StatusCode, strings.TrimSpace(message))
 }
 
 // Helper function to convert SHA1 bytes to base64 for API calls
@@ -908,15 +951,15 @@ func (a *Api) GetLibraryState(syncToken string) (map[string]interface{}, error) 
 					"3": map[string]interface{}{},
 					"4": map[string]interface{}{},
 					"5": map[string]interface{}{
-						"1":  map[string]interface{}{},
-						"2":  map[string]interface{}{},
-						"3":  map[string]interface{}{},
-						"4":  map[string]interface{}{},
-						"5":  map[string]interface{}{},
-						"7":  map[string]interface{}{},
+						"1": map[string]interface{}{},
+						"2": map[string]interface{}{},
+						"3": map[string]interface{}{},
+						"4": map[string]interface{}{},
+						"5": map[string]interface{}{},
+						"7": map[string]interface{}{},
 					},
-					"6":  map[string]interface{}{},
-					"7":  map[string]interface{}{
+					"6": map[string]interface{}{},
+					"7": map[string]interface{}{
 						"2": map[string]interface{}{},
 					},
 					"15": map[string]interface{}{},
@@ -1032,15 +1075,15 @@ func (a *Api) GetLibraryPageInit(resumeToken string) (map[string]interface{}, er
 					"3": map[string]interface{}{},
 					"4": map[string]interface{}{},
 					"5": map[string]interface{}{
-						"1":  map[string]interface{}{},
-						"2":  map[string]interface{}{},
-						"3":  map[string]interface{}{},
-						"4":  map[string]interface{}{},
-						"5":  map[string]interface{}{},
-						"7":  map[string]interface{}{},
+						"1": map[string]interface{}{},
+						"2": map[string]interface{}{},
+						"3": map[string]interface{}{},
+						"4": map[string]interface{}{},
+						"5": map[string]interface{}{},
+						"7": map[string]interface{}{},
 					},
-					"6":  map[string]interface{}{},
-					"7":  map[string]interface{}{
+					"6": map[string]interface{}{},
+					"7": map[string]interface{}{
 						"2": map[string]interface{}{},
 					},
 					"15": map[string]interface{}{},
@@ -1121,15 +1164,15 @@ func (a *Api) GetLibraryPage(resumeToken, syncToken string) (map[string]interfac
 				"3": map[string]interface{}{},
 				"4": map[string]interface{}{},
 				"5": map[string]interface{}{
-					"1":  map[string]interface{}{},
-					"2":  map[string]interface{}{},
-					"3":  map[string]interface{}{},
-					"4":  map[string]interface{}{},
-					"5":  map[string]interface{}{},
-					"7":  map[string]interface{}{},
+					"1": map[string]interface{}{},
+					"2": map[string]interface{}{},
+					"3": map[string]interface{}{},
+					"4": map[string]interface{}{},
+					"5": map[string]interface{}{},
+					"7": map[string]interface{}{},
 				},
-				"6":  map[string]interface{}{},
-				"7":  map[string]interface{}{
+				"6": map[string]interface{}{},
+				"7": map[string]interface{}{
 					"2": map[string]interface{}{},
 				},
 				"15": map[string]interface{}{},

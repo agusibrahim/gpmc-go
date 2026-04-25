@@ -1,5 +1,7 @@
 package client
 
+import "time"
+
 // ProgressStatus represents the current state of a file upload
 type ProgressStatus string
 
@@ -15,131 +17,137 @@ const (
 
 // ProgressUpdate represents a single progress update for a file
 type ProgressUpdate struct {
-	ID         string         `json:"id"`
-	Filename   string         `json:"filename"`
-	Status     ProgressStatus `json:"status"`
-	Progress   float64        `json:"progress"` // 0.0 to 1.0
-	Path       string         `json:"path"`
-	Error      string         `json:"error,omitempty"`
-	MediaKey   string         `json:"media_key,omitempty"`
-	TotalFiles int            `json:"total_files,omitempty"`
+	ID              string         `json:"id"`
+	Filename        string         `json:"filename"`
+	Status          ProgressStatus `json:"status"`
+	Progress        float64        `json:"progress"`
+	Path            string         `json:"path"`
+	Error           string         `json:"error,omitempty"`
+	MediaKey        string         `json:"media_key,omitempty"`
+	TotalFiles      int            `json:"total_files,omitempty"`
+	BytesSent       int64          `json:"bytes_sent,omitempty"`
+	BytesTotal      int64          `json:"bytes_total,omitempty"`
+	BatchBytesSent  int64          `json:"batch_bytes_sent,omitempty"`
+	BatchBytesTotal int64          `json:"batch_bytes_total,omitempty"`
+	Attempt         int            `json:"attempt,omitempty"`
+}
+
+type BatchSummary struct {
+	TotalFiles    int           `json:"total_files"`
+	Uploaded      int           `json:"uploaded"`
+	Skipped       int           `json:"skipped"`
+	Failed        int           `json:"failed"`
+	TotalBytes    int64         `json:"total_bytes"`
+	UploadedBytes int64         `json:"uploaded_bytes"`
+	Duration      time.Duration `json:"duration"`
+}
+
+type FileResult struct {
+	Path     string         `json:"path"`
+	Filename string         `json:"filename"`
+	Size     int64          `json:"size"`
+	ModTime  int64          `json:"mod_time,omitempty"`
+	MediaKey string         `json:"media_key,omitempty"`
+	Status   ProgressStatus `json:"status"`
+	Error    string         `json:"error,omitempty"`
+	Hash     string         `json:"hash,omitempty"`
+	Verified bool           `json:"verified"`
+	Attempts int            `json:"attempts"`
+}
+
+type UploadBatchResult struct {
+	Summary BatchSummary `json:"summary"`
+	Files   []FileResult `json:"files"`
 }
 
 // uploadOptions contains options for uploading files
 type uploadOptions struct {
-	albumName          string
-	useQuota           bool
-	saver              bool
-	recursive          bool
-	showProgress       bool
-	threads            int
-	forceUpload        bool
-	deleteFromHost     bool
-	filterExp          string
-	filterExclude      bool
-	filterRegex        bool
-	filterIgnoreCase   bool
-	filterMatchPath    bool
-	progressChan       chan ProgressUpdate
+	albumName        string
+	useQuota         bool
+	saver            bool
+	recursive        bool
+	showProgress     bool
+	threads          int
+	forceUpload      bool
+	deleteFromHost   bool
+	filterExp        string
+	filterExclude    bool
+	filterRegex      bool
+	filterIgnoreCase bool
+	filterMatchPath  bool
+	progressChan     chan ProgressUpdate
+	resume           bool
+	manifestPath     string
+	verify           bool
 }
 
 // UploadOption is a functional option for upload operations
 type UploadOption func(*uploadOptions)
 
-// WithAlbum sets the album name for uploaded files
 func WithAlbum(albumName string) UploadOption {
-	return func(o *uploadOptions) {
-		o.albumName = albumName
-	}
+	return func(o *uploadOptions) { o.albumName = albumName }
 }
 
-// WithUseQuota sets whether to count uploads against storage quota
 func WithUseQuota(useQuota bool) UploadOption {
-	return func(o *uploadOptions) {
-		o.useQuota = useQuota
-	}
+	return func(o *uploadOptions) { o.useQuota = useQuota }
 }
 
-// WithSaver sets whether to upload in storage saver quality
 func WithSaver(saver bool) UploadOption {
-	return func(o *uploadOptions) {
-		o.saver = saver
-	}
+	return func(o *uploadOptions) { o.saver = saver }
 }
 
-// WithRecursive sets whether to scan directories recursively
 func WithRecursive(recursive bool) UploadOption {
-	return func(o *uploadOptions) {
-		o.recursive = recursive
-	}
+	return func(o *uploadOptions) { o.recursive = recursive }
 }
 
-// WithProgress sets whether to show upload progress
 func WithProgress(showProgress bool) UploadOption {
-	return func(o *uploadOptions) {
-		o.showProgress = showProgress
-	}
+	return func(o *uploadOptions) { o.showProgress = showProgress }
 }
 
-// WithThreads sets the number of concurrent upload threads
 func WithThreads(threads int) UploadOption {
-	return func(o *uploadOptions) {
-		o.threads = threads
-	}
+	return func(o *uploadOptions) { o.threads = threads }
 }
 
-// WithForceUpload sets whether to skip hash checking and upload all files
 func WithForceUpload(forceUpload bool) UploadOption {
-	return func(o *uploadOptions) {
-		o.forceUpload = forceUpload
-	}
+	return func(o *uploadOptions) { o.forceUpload = forceUpload }
 }
 
-// WithDeleteFromHost sets whether to delete files after successful upload
 func WithDeleteFromHost(deleteFromHost bool) UploadOption {
-	return func(o *uploadOptions) {
-		o.deleteFromHost = deleteFromHost
-	}
+	return func(o *uploadOptions) { o.deleteFromHost = deleteFromHost }
 }
 
-// WithFilter sets a filter expression for file selection
 func WithFilter(filterExp string) UploadOption {
-	return func(o *uploadOptions) {
-		o.filterExp = filterExp
-	}
+	return func(o *uploadOptions) { o.filterExp = filterExp }
 }
 
-// WithFilterExclude sets whether to exclude matching files
 func WithFilterExclude(exclude bool) UploadOption {
-	return func(o *uploadOptions) {
-		o.filterExclude = exclude
-	}
+	return func(o *uploadOptions) { o.filterExclude = exclude }
 }
 
-// WithFilterRegex sets whether to use regex for filtering
 func WithFilterRegex(useRegex bool) UploadOption {
-	return func(o *uploadOptions) {
-		o.filterRegex = useRegex
-	}
+	return func(o *uploadOptions) { o.filterRegex = useRegex }
 }
 
-// WithFilterIgnoreCase sets whether to use case-insensitive filtering
 func WithFilterIgnoreCase(ignoreCase bool) UploadOption {
-	return func(o *uploadOptions) {
-		o.filterIgnoreCase = ignoreCase
-	}
+	return func(o *uploadOptions) { o.filterIgnoreCase = ignoreCase }
 }
 
-// WithFilterMatchPath sets whether to match against full path instead of filename
 func WithFilterMatchPath(matchPath bool) UploadOption {
-	return func(o *uploadOptions) {
-		o.filterMatchPath = matchPath
-	}
+	return func(o *uploadOptions) { o.filterMatchPath = matchPath }
 }
 
-// WithProgressChan sets a channel for receiving progress updates
 func WithProgressChan(ch chan ProgressUpdate) UploadOption {
-	return func(o *uploadOptions) {
-		o.progressChan = ch
-	}
+	return func(o *uploadOptions) { o.progressChan = ch }
+}
+
+func WithResume(resume bool) UploadOption {
+	return func(o *uploadOptions) { o.resume = resume }
+}
+
+func WithManifestPath(path string) UploadOption {
+	return func(o *uploadOptions) { o.manifestPath = path }
+}
+
+func WithVerify(verify bool) UploadOption {
+	return func(o *uploadOptions) { o.verify = verify }
 }
