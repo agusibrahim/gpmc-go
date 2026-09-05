@@ -293,3 +293,12 @@ func loadConfig(cmd *cobra.Command) (*config.Config, error) {
 
 	return cfg, nil
 }
+
+func clientNewFromConfig(cfg *config.Config) (*client.Client, error) {
+	return client.New(cfg.AuthData,
+		client.WithTimeout(cfg.Timeout),
+		client.WithUploadTimeout(cfg.UploadTimeout),
+		client.WithLanguage(cfg.Language),
+		client.WithProxy(cfg.Proxy),
+	)
+}

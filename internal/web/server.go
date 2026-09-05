@@ -47,6 +47,20 @@ func (s *WebServer) Start() error {
 	mux.HandleFunc("/api/upload", s.handleUpload)
 	mux.HandleFunc("/api/events", s.handleEvents)
 
+	// Album APIs
+	mux.HandleFunc("/api/albums", s.handleAlbums)
+	mux.HandleFunc("/api/albums/photos", s.handleAlbumPhotos)
+	mux.HandleFunc("/api/albums/comment", s.handleAlbumComment)
+	mux.HandleFunc("/api/albums/upload", s.handleAlbumUpload)
+	mux.HandleFunc("/api/albums/share", s.handleAlbumShare)
+	mux.HandleFunc("/api/albums/rename", s.handleAlbumRename)
+	mux.HandleFunc("/api/albums/delete", s.handleAlbumDelete)
+	mux.HandleFunc("/api/thumbnail", s.handleThumbnail)
+
+	// AI Enhancement API
+	mux.HandleFunc("/api/ai/enhance", s.handleAIEnhance)
+
+
 	server := &http.Server{
 		Addr:              fmt.Sprintf("127.0.0.1:%d", s.port),
 		Handler:           mux,
@@ -144,6 +158,274 @@ func (s *WebServer) handleUpload(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"status": "upload_started"})
 }
 
+// handleAlbums handles GET (list albums) and POST (create album)
+func (s *WebServer) handleAlbums(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	if r.Method == http.MethodGet {
+		albums, err := s.client.ListAlbums()
+		if err != nil {
+			s.logger.Warn("ListAlbums returned error", "error", err)
+			// Return empty list instead of crashing UI
+			json.NewEncoder(w).Encode([]interface{}{})
+			return
+		}
+		json.NewEncoder(w).Encode(albums)
+		return
+	}
+
+	if r.Method == http.MethodPost {
+		var req struct {
+			Title     string   `json:"title"`
+			MediaKeys []string `json:"media_keys"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+		if strings.TrimSpace(req.Title) == "" {
+			http.Error(w, "Album title is required", http.StatusBadRequest)
+			return
+		}
+
+		albumKey, err := s.client.CreateAlbum(req.Title, req.MediaKeys...)
+		if err != nil {
+			http.Error(w, "CreateAlbum failed: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		json.NewEncoder(w).Encode(map[string]string{
+			"album_key": albumKey,
+			"title":     req.Title,
+		})
+		return
+	}
+
+	http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+}
+
+// handleAlbumPhotos lists photos in an album
+func (s *WebServer) handleAlbumPhotos(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	albumKey := r.URL.Query().Get("album_key")
+	if albumKey == "" {
+		http.Error(w, "album_key parameter is required", http.StatusBadRequest)
+		return
+	}
+	shareToken := r.URL.Query().Get("share_token")
+
+	photos, err := s.client.ListPhotosInAlbum(albumKey, shareToken)
+	if err != nil {
+		http.Error(w, "Failed to list photos: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(photos)
+}
+
+// handleAlbumComment adds a comment to an album
+func (s *WebServer) handleAlbumComment(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		AlbumKey   string `json:"album_key"`
+		Comment    string `json:"comment"`
+		ShareToken string `json:"share_token"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+	if req.AlbumKey == "" || strings.TrimSpace(req.Comment) == "" {
+		http.Error(w, "album_key and comment text are required", http.StatusBadRequest)
+		return
+	}
+
+	commentID, err := s.client.AddCommentToAlbum(req.AlbumKey, req.Comment, req.ShareToken)
+	if err != nil {
+		http.Error(w, "Failed to add comment: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"comment_id": commentID,
+		"status":     "ok",
+	})
+}
+
+// handleAlbumUpload uploads a single photo and adds it directly to the specified album
+func (s *WebServer) handleAlbumUpload(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	r.Body = http.MaxBytesReader(w, r.Body, 500<<20) // 500MB max
+	if err := r.ParseMultipartForm(32 << 20); err != nil {
+		http.Error(w, "Failed to parse form: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	albumKey := r.FormValue("album_key")
+	if albumKey == "" {
+		http.Error(w, "album_key is required", http.StatusBadRequest)
+		return
+	}
+	shareToken := r.FormValue("share_token")
+
+	files := r.MultipartForm.File["file"]
+	if len(files) == 0 {
+		http.Error(w, "No file provided in 'file' field", http.StatusBadRequest)
+		return
+	}
+
+	tempDir, err := os.MkdirTemp("", "gpmc-album-up-*")
+	if err != nil {
+		http.Error(w, "Failed to create temp dir", http.StatusInternalServerError)
+		return
+	}
+	defer os.RemoveAll(tempDir)
+
+	filePaths, err := saveMultipartFiles(tempDir, files)
+	if err != nil || len(filePaths) == 0 {
+		http.Error(w, "Failed to save file: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	mediaKey, err := s.client.UploadPhotoToAlbum(albumKey, filePaths[0], shareToken)
+	if err != nil {
+		http.Error(w, "Failed to upload photo to album: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"media_key": mediaKey,
+		"filename":  files[0].Filename,
+		"status":    "ok",
+	})
+}
+
+// handleAlbumShare generates a public share link for an album
+func (s *WebServer) handleAlbumShare(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		AlbumKey string `json:"album_key"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+	if req.AlbumKey == "" {
+		http.Error(w, "album_key is required", http.StatusBadRequest)
+		return
+	}
+
+	res, err := s.client.ShareAlbum(req.AlbumKey)
+	if err != nil {
+		http.Error(w, "ShareAlbum failed: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(res)
+}
+
+// handleAlbumRename renames an album
+func (s *WebServer) handleAlbumRename(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		AlbumKey string `json:"album_key"`
+		Title    string `json:"title"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+	if req.AlbumKey == "" || strings.TrimSpace(req.Title) == "" {
+		http.Error(w, "album_key and title are required", http.StatusBadRequest)
+		return
+	}
+
+	if err := s.client.RenameAlbum(req.AlbumKey, req.Title); err != nil {
+		http.Error(w, "RenameAlbum failed: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
+}
+
+// handleAlbumDelete deletes an album
+func (s *WebServer) handleAlbumDelete(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req struct {
+		AlbumKey string `json:"album_key"`
+		IsShared bool   `json:"is_shared"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+	if req.AlbumKey == "" {
+		http.Error(w, "album_key is required", http.StatusBadRequest)
+		return
+	}
+
+	if err := s.client.DeleteAlbum(req.AlbumKey, req.IsShared); err != nil {
+		http.Error(w, "DeleteAlbum failed: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
+}
+
+// handleThumbnail streams the thumbnail for a mediaKey
+func (s *WebServer) handleThumbnail(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	mediaKey := r.URL.Query().Get("media_key")
+	if mediaKey == "" {
+		http.Error(w, "media_key is required", http.StatusBadRequest)
+		return
+	}
+
+	thumbBytes, err := s.client.GetThumbnail(mediaKey)
+	if err != nil {
+		http.Error(w, "Failed to fetch thumbnail: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "image/jpeg")
+	w.Header().Set("Cache-Control", "public, max-age=86400")
+	w.Write(thumbBytes)
+}
+
 func saveMultipartFiles(tempDir string, files []*multipart.FileHeader) ([]string, error) {
 	filePaths := make([]string, 0, len(files))
 	for _, fileHeader := range files {
@@ -230,3 +512,55 @@ func (s *WebServer) broadcast(update client.ProgressUpdate) {
 		}
 	}
 }
+
+// handleAIEnhance handles photo enhancement via Google Photos AI Magic Editor Preset
+func (s *WebServer) handleAIEnhance(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Limit to 50MB
+	r.Body = http.MaxBytesReader(w, r.Body, 50<<20)
+	if err := r.ParseMultipartForm(32 << 20); err != nil {
+		http.Error(w, "Failed to parse form: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	files := r.MultipartForm.File["file"]
+	if len(files) == 0 {
+		http.Error(w, "No file provided in 'file' field", http.StatusBadRequest)
+		return
+	}
+
+	fileHeader := files[0]
+	file, err := fileHeader.Open()
+	if err != nil {
+		http.Error(w, "Failed to open uploaded file: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	imgBytes, err := io.ReadAll(file)
+	if err != nil {
+		http.Error(w, "Failed to read file content: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	s.logger.Info("Starting AI Photo Enhancement", "filename", fileHeader.Filename, "size", len(imgBytes))
+	results, err := s.client.EnhancePhoto(imgBytes)
+	if err != nil {
+		s.logger.Error("AI Photo Enhancement failed", "error", err)
+		http.Error(w, "AI Enhancement failed: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	s.logger.Info("AI Photo Enhancement successful", "variations", len(results))
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":   "ok",
+		"filename": fileHeader.Filename,
+		"results":  results,
+	})
+}
+

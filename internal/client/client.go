@@ -136,6 +136,11 @@ func (c *Client) GetMediaKeyByHash(sha1Hash interface{}) (string, error) {
 	return c.api.FindRemoteMediaByHash(hashBytes)
 }
 
+// GetThumbnail retrieves thumbnail bytes for a media item
+func (c *Client) GetThumbnail(mediaKey string) ([]byte, error) {
+	return c.api.GetThumbnail(mediaKey)
+}
+
 // addRawMimetypes adds RAW photo file extensions to MIME types
 func (c *Client) addRawMimetypes() {
 	// This would add raw MIME type mappings

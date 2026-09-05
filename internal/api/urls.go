@@ -21,8 +21,20 @@ const (
 	EndpointSetFavorite        = "/5144645502632292153"
 	EndpointSetArchived        = "/6715446385130606868"
 
+	// Modern Android Album Endpoints discovered via HAR MITM
+	EndpointListPhotosInAlbum   = "/2035722585448626696"
+	EndpointCommentAlbum        = "/15273438921077897261"
+	EndpointAddToAlbumV2        = "/4733640162746355126"
+	EndpointRenameAlbum         = "/16466587394238175348"
+	EndpointShareAlbum          = "/11663664809460121647"
+	EndpointDeleteRegularAlbum  = "/11165707358190966680"
+	EndpointDeleteSharedAlbum   = "/8089014401670041416"
+
 	// Full URL for download endpoint (different pattern)
 	DownloadURL = "https://photosdata-pa.googleapis.com/$rpc/social.frontend.photos.preparedownloaddata.v1.PhotosPrepareDownloadDataService/PhotosPrepareDownload"
+
+	// AI Enhancement Endpoint (Magic Editor Preset)
+	URLMagicEditorPresetEffect = "https://photosdata-pa.googleapis.com/$rpc/social.frontend.photos.effectsdata.v1.PhotosEffectsDataService/PhotosGenerateMagicEditorPresetEffect"
 )
 
 // GetUploadURL returns the full upload URL
